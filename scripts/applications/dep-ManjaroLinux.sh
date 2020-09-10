@@ -35,6 +35,12 @@ git clone https://aur.archlinux.org/spotify.git && cd spotify && makepkg -si; cd
 git clone https://aur.archlinux.org/yuzu-git.git && cd yuzu-git && makepkg -si; cd ~/.tempApp
 git clone https://aur.archlinux.org/jetbrains-toolbox.git && cd jetbrains-toolbox && makepkg -si; cd ~/.tempApp
 git clone https://aur.archlinux.org/postman.git && cd postman && makepkg -si; cd ~/.tempApp
+git clone https://aur.archlinux.org/nordvpn-bin.git cd nordvpn-bin && makepkg -si; cd ~/.tempApp
+
+echo "Setting up nordvpn"
+systemctl enable nordvpnd.service
+systemctl start nordvpnd.service
+nordvpn set technology nordlynx
 
 rm -rf ~/.tempApp
 
