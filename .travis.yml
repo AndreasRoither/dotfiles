@@ -1,0 +1,13 @@
+os: linux
+sudo: required
+
+language: python
+
+sudo: false
+
+script:
+  - yes | ./install
+
+notifications:
+  on_success: change
+  on_failure: always
