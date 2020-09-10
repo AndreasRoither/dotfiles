@@ -68,5 +68,4 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-source ~/.bashrc
-
+[[ -e ~/.bashrc ]] && emulate sh -c 'source ~/.bashrc'

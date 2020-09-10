@@ -43,7 +43,8 @@ fi
 
 ask "Install packages?" Y && bash ${path}
 ask "Setup ssh?" Y && bash ./scripts./ssh.sh
+ask "Setup zsh?" Y && git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh && chsh -s $(which zsh)
+# bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-figlet "... and we're back!" | lolcat
 
 exit 0

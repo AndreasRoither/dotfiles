@@ -26,6 +26,3 @@
     stdin: true
     stdout: true
     stderr: true
-  -
-    command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    description: Installing zsh
