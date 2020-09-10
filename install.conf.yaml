@@ -14,6 +14,7 @@
     ~/.bash_logout: bash_logout
     ~/.gitconfig: gitconfig
     ~/.gitignore_global: gitignore_global
+    ~/.zshrc: zshrc
 - shell: 
   - 
     command: git submodule update --init --recursive
@@ -25,3 +26,6 @@
     stdin: true
     stdout: true
     stderr: true
+  -
+    command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    description: Installing zsh
