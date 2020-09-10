@@ -1,0 +1,27 @@
+- defaults:
+    link:
+      relink: true
+
+- clean: ['~']
+
+- create:
+    - ~/projects
+
+- link:
+    ~/.profile: profile
+    ~/.bash_profile: bash_profile
+    ~/.bashrc: bashrc
+    ~/.bash_logout: bash_logout
+    ~/.gitconfig: gitconfig
+    ~/.gitignore_global: gitignore_global
+- shell: 
+  - 
+    command: git submodule update --init --recursive
+    description: Update git submodules
+  - 
+    command: ./setup.sh
+    description: Start installing dependencies and general setup
+    quiet: false
+    stdin: true
+    stdout: true
+    stderr: true

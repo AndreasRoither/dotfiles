@@ -1,0 +1,59 @@
+[user]
+        name=Andreas Roither
+        email=andi.roither@protonmail.com
+[alias]
+        a = add
+        aa = add .
+        aaa = add --all
+        au = add --update
+        b = branch
+        bd = branch --delete 
+        c = commit
+        cm = commit --message
+        cf = commit --fixup
+        co = checkout
+        cob = checkout -b
+        com = checkout master
+        cos = checkout staging
+        cod = checkout develop
+        d = diff
+        da = diff HEAD
+        i = init
+        lg = log --graph --oneline --decorate --all
+        ld = log --pretty=format:"%h %ad %s" --date=short --all
+        m = merge --no-ff
+        ma = merge --abort
+        mc = merge --continue
+        p = pull
+        pr = pull --rebase
+        r = rebase
+        s = status
+        ss = status --short
+        st = stash
+        sta = stash apply
+        std = stash drop
+        stl = stash list
+        stp = stash pop
+        sts = stash save
+        # Get the current branch name (not so useful in itself, but used in
+        # other aliases)
+        branch-name = "!git rev-parse --abbrev-ref HEAD"
+
+        # Push the current branch to the remote "origin", and set it to track
+        # the upstream branch
+        publish = "!git push -u origin $(git branch-name)"
+[color]
+        diff = auto
+        status = auto
+        branch = auto
+[color "status"]
+        added = green
+        changed = blue
+        untracked = red 
+[grep]
+	lineNumber = true
+[core]
+	excludesfile = ~/.gitignore_global
+# Allow local customizations in the .gitconfig_local file
+[include]
+	path = ~/.gitconfig_local
