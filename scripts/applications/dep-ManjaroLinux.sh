@@ -17,6 +17,7 @@ sudo pacman -S --needed --noconfirm \
     keepassxc \
     gamemode \
     htop \
+    qbittorrent
 
 sudo pacman -S --needed --noconfirm docker docker-compose
 
