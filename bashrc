@@ -168,6 +168,7 @@ fi
 # ----------------------
 # General
 # ----------------------
+alias reload='source ~/.bashrc'
 alias lt='ls --human-readable --size -1 -S --classify'
 alias gh='history|grep'
 alias left='ls -t -1'
@@ -206,7 +207,7 @@ alias gs='git status'
 alias start='cd `git rev-parse --show-toplevel` && git checkout master && git pull'
 alias cg='cd `git rev-parse --show-toplevel`' 
 alias glg='git log --graph --oneline --decorate --all'
-
+alias gc='git commit'
 
 # show the current branch
 parse_git_branch() {

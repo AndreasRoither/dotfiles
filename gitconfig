@@ -19,6 +19,8 @@
         d = diff
         da = diff HEAD
         i = init
+        ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+        ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
         lg = log --graph --oneline --decorate --all
         ld = log --pretty=format:"%h %ad %s" --date=short --all
         m = merge --no-ff
