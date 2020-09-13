@@ -1,147 +1,3 @@
-#
-# ~/.bashrc
-#
-
-# check if zsh is in use
-if [ -z ${ZSH_NAME} ]; then
-	[[ $- != *i* ]] && return
-
-	colors() {
-		local fgc bgc vals seq0
-
-		printf "Color escapes are %s\n" '\e[${value};...;${value}m'
-		printf "Values 30..37 are \e[33mforeground colors\e[m\n"
-		printf "Values 40..47 are \e[43mbackground colors\e[m\n"
-		printf "Value  1 gives a  \e[1mbold-faced look\e[m\n\n"
-
-		# foreground colors
-		for fgc in {30..37}; do
-			# background colors
-			for bgc in {40..47}; do
-				fgc=${fgc#37} # white
-				bgc=${bgc#40} # black
-
-				vals="${fgc:+$fgc;}${bgc}"
-				vals=${vals%%;}
-
-				seq0="${vals:+\e[${vals}m}"
-				printf "  %-9s" "${seq0:-(default)}"
-				printf " ${seq0}TEXT\e[m"
-				printf " \e[${vals:+${vals+$vals;}}1mBOLD\e[m"
-			done
-			echo; echo
-		done
-	}
-
-	[ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
-
-	# Change the window title of X terminals
-	case ${TERM} in
-		xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|interix|konsole*)
-			PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\007"'
-			;;
-		screen*)
-			PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
-			;;
-	esac
-
-	use_color=true
-
-	# Set colorful PS1 only on colorful terminals.
-	# dircolors --print-database uses its own built-in database
-	# instead of using /etc/DIR_COLORS.  Try to use the external file
-	# first to take advantage of user additions.  Use internal bash
-	# globbing instead of external grep binary.
-	safe_term=${TERM//[^[:alnum:]]/?}   # sanitize TERM
-	match_lhs=""
-	[[ -f ~/.dir_colors   ]] && match_lhs="${match_lhs}$(<~/.dir_colors)"
-	[[ -f /etc/DIR_COLORS ]] && match_lhs="${match_lhs}$(</etc/DIR_COLORS)"
-	[[ -z ${match_lhs}    ]] \
-		&& type -P dircolors >/dev/null \
-		&& match_lhs=$(dircolors --print-database)
-	[[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] && use_color=true
-
-	if ${use_color} ; then
-		# Enable colors for ls, etc.  Prefer ~/.dir_colors #64489
-		if type -P dircolors >/dev/null ; then
-			if [[ -f ~/.dir_colors ]] ; then
-				eval $(dircolors -b ~/.dir_colors)
-			elif [[ -f /etc/DIR_COLORS ]] ; then
-				eval $(dircolors -b /etc/DIR_COLORS)
-			fi
-		fi
-
-		if [[ ${EUID} == 0 ]] ; then
-			PS1='\[\033[01;31m\][\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '
-		else
-			PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\] \W\[\033[01;32m\]]\$\[\033[00m\] '
-		fi
-
-		alias ls='ls --color=auto'
-		alias grep='grep --colour=auto'
-		alias egrep='egrep --colour=auto'
-		alias fgrep='fgrep --colour=auto'
-	else
-		if [[ ${EUID} == 0 ]] ; then
-			# show root@ when we don't have colors
-			PS1='\u@\h \W \$ '
-		else
-			PS1='\u@\h \w \$ '
-		fi
-	fi
-
-	unset use_color safe_term match_lhs sh
-
-	alias cp="cp -i"                          # confirm before overwriting something
-	alias df='df -h'                          # human-readable sizes
-	alias free='free -m'                      # show sizes in MB
-	alias np='nano -w PKGBUILD'
-	alias more=less
-
-	xhost +local:root > /dev/null 2>&1
-
-	complete -cf sudo
-
-	# Bash won't get SIGWINCH if another process is in the foreground.
-	# Enable checkwinsize so that bash will check the terminal size when
-	# it regains control.  #65623
-	# http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
-	shopt -s checkwinsize
-
-	shopt -s expand_aliases
-
-	# export QT_SELECT=4
-
-	# Enable history appending instead of overwriting.  #139609
-	shopt -s histappend
-
-	#
-	# # ex - archive extractor
-	# # usage: ex <file>
-	ex ()
-	{
-	if [ -f $1 ] ; then
-		case $1 in
-		*.tar.bz2)   tar xjf $1   ;;
-		*.tar.gz)    tar xzf $1   ;;
-		*.bz2)       bunzip2 $1   ;;
-		*.rar)       unrar x $1     ;;
-		*.gz)        gunzip $1    ;;
-		*.tar)       tar xf $1    ;;
-		*.tbz2)      tar xjf $1   ;;
-		*.tgz)       tar xzf $1   ;;
-		*.zip)       unzip $1     ;;
-		*.Z)         uncompress $1;;
-		*.7z)        7z x $1      ;;
-		*)           echo "'$1' cannot be extracted via ex()" ;;
-		esac
-	else
-		echo "'$1' is not a valid file"
-	fi
-	}
-fi
-
-
 # ----------------------
 # Start ssh-agent
 # ----------------------
@@ -170,7 +26,6 @@ fi
 # ----------------------
 # General
 # ----------------------
-alias reload='source ~/.bashrc'
 alias lt='ls --human-readable --size -1 -S --classify'
 alias gh='history|grep'
 alias left='ls -t -1'
@@ -178,7 +33,6 @@ alias cpv='rsync -ah --info=progress2'
 alias untar='tar -zxvf '
 alias wget='wget -c '
 alias ipe='curl ipinfo.io/ip'
-alias ipi='ipconfig getifaddr en0'
 
 ## get rid of command not found ##
 alias cd..='cd ..'
@@ -203,20 +57,48 @@ function cd() {
 }
 
 # ----------------------
-# Git 
+# Git Aliases
 # ----------------------
-alias gs='git status'
-alias start='cd `git rev-parse --show-toplevel` && git checkout master && git pull'
+alias startgit='cd `git rev-parse --show-toplevel` && git checkout master && git pull'
 alias cg='cd `git rev-parse --show-toplevel`' 
-alias glg='git log --graph --oneline --decorate --all'
-alias gc='git commit'
 
-# show the current branch
-parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-}
-#export PS1="\u@\h \[\e[32m\]\w \[\e[91m\]\$(parse_git_branch)\[\e[00m\]$ "
-source /usr/share/git/completion/git-prompt.sh 
+alias ga='git add'
+alias gaa='git add .'
+alias gaaa='git add --all'
+alias gau='git add --update'
+alias gb='git branch'
+alias gbd='git branch --delete '
+alias gc='git commit'
+alias gcm='git commit --message'
+alias gcf='git commit --fixup'
+alias gco='git checkout'
+alias gcob='git checkout -b'
+alias gcom='git checkout master'
+alias gcos='git checkout staging'
+alias gcod='git checkout develop'
+alias gd='git diff'
+alias gda='git diff HEAD'
+alias gi='git init'
+alias glg='git log --graph --oneline --decorate --all'
+alias gld='git log --pretty=format:"%h %ad %s" --date=short --all'
+alias gm='git merge --no-ff'
+alias gma='git merge --abort'
+alias gmc='git merge --continue'
+alias gp='git pull'
+alias gpr='git pull --rebase'
+alias gr='git rebase'
+alias gs='git status'
+alias gss='git status --short'
+alias gst='git stash'
+alias gsta='git stash apply'
+alias gstd='git stash drop'
+alias gstl='git stash list'
+alias gstp='git stash pop'
+alias gsts='git stash save'
+
+# ----------------------
+# Git Functions
+# ----------------------
 # Git log find by commit message
 function glf() { git log --all --grep="$1"; }
 
