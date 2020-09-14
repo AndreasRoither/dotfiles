@@ -60,3 +60,5 @@
 # Allow local customizations in the .gitconfig_local file
 [include]
 	path = ~/.gitconfig_local
+[credential]
+	helper = cache --timeout=2628000

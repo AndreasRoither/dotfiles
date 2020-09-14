@@ -68,4 +68,32 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+
+# old aliases from bash
 [[ -e ~/.bashrc ]] && emulate sh -c 'source ~/.bashrc'
+
+
+
+#
+# Shorten directory names
+
+hash -d onedrive=/home/andreas/Insync/andi.roither@hotmail.de/OneDrive
+
+
+
+# zshrc aliases
+
+# ----------------------
+# nordvpn
+# ----------------------
+alias ns="nordvpn status"
+alias nd="nordvpn disconnect"
+alias nc="nordvpn connect"
+alias ncs="nordvpn connect Switzerland"
+function nkillswitch() {
+    if [[ $1 == "" ]]; then
+        echo "Command needs value: on | off"
+    else
+        nordvpn set killswitch $1
+    fi
+}
