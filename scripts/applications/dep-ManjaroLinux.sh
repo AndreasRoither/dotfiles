@@ -38,7 +38,8 @@ yay -S --noconfirm insync \
     yuzu-git \
     jetbrains-toolbox \
     postman \
-    nordvpn-bin
+    nordvpn-bin \
+    vlc
 
 echo "Setting up nordvpn"
 systemctl enable nordvpnd.service
