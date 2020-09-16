@@ -57,6 +57,16 @@
 [core]
 	excludesfile = ~/.gitignore_global
         autocrlf = input
+    editor = code --wait
+# Comment: This is to unlock Visual Studio Code as your Git diff and Git merge tool
+[merge]
+    tool = vscode
+[mergetool "vscode"]
+    cmd = code --wait $MERGED
+[diff]
+    tool = vscode
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
 # Allow local customizations in the .gitconfig_local file
 [include]
 	path = ~/.gitconfig_local

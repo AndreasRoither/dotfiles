@@ -29,14 +29,16 @@ sudo snap install code --classic
 sudo snap install gnome-calendar
 sudo snap install ao
 
+echo "Installing yay"
+git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si && cd ~/.tempApp
 
 echo "Installing from aur"
-git clone https://aur.archlinux.org/insync.git && cd insync && makepkg -si; cd ~/.tempApp
-git clone https://aur.archlinux.org/spotify.git && cd spotify && makepkg -si; cd ~/.tempApp
-git clone https://aur.archlinux.org/yuzu-git.git && cd yuzu-git && makepkg -si; cd ~/.tempApp
-git clone https://aur.archlinux.org/jetbrains-toolbox.git && cd jetbrains-toolbox && makepkg -si; cd ~/.tempApp
-git clone https://aur.archlinux.org/postman.git && cd postman && makepkg -si; cd ~/.tempApp
-git clone https://aur.archlinux.org/nordvpn-bin.git cd nordvpn-bin && makepkg -si; cd ~/.tempApp
+yay -S --noconfirm insync \
+    spotify \
+    yuzu-git \
+    jetbrains-toolbox \
+    postman \
+    nordvpn-bin
 
 echo "Setting up nordvpn"
 systemctl enable nordvpnd.service
