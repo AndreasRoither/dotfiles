@@ -17,7 +17,8 @@ sudo pacman -S --needed --noconfirm \
     keepassxc \
     gamemode \
     htop \
-    qbittorrent
+    qbittorrent \
+    hub
 
 sudo pacman -S --needed --noconfirm docker docker-compose
 
@@ -33,7 +34,8 @@ echo "Installing yay"
 git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si && cd ~/.tempApp
 
 echo "Installing from aur"
-yay -S --noconfirm insync \
+yay -S --noconfirm \
+    insync \
     spotify \
     yuzu-git \
     jetbrains-toolbox \
