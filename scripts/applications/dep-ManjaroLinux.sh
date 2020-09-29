@@ -18,9 +18,9 @@ sudo pacman -S --needed --noconfirm \
     gamemode \
     htop \
     qbittorrent \
-    hub
-
-sudo pacman -S --needed --noconfirm docker docker-compose
+    hub \
+    docker \
+    docker-compose
 
 echo "Installing snapd..."
 pamac install snapd
@@ -41,7 +41,8 @@ yay -S --noconfirm \
     jetbrains-toolbox \
     postman \
     nordvpn-bin \
-    vlc
+    vlc \
+    duf
 
 echo "Setting up nordvpn"
 systemctl enable nordvpnd.service
