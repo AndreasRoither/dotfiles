@@ -73,12 +73,9 @@ source $ZSH/oh-my-zsh.sh
 [[ -e ~/.bashrc ]] && emulate sh -c 'source ~/.bashrc'
 
 
-
-#
 # Shorten directory names
 
 hash -d onedrive=/home/andreas/Insync/andi.roither@hotmail.de/OneDrive
-
 
 
 # zshrc aliases
