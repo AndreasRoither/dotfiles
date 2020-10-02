@@ -13,6 +13,7 @@ echo "[*] Installing tools..."
 sudo pacman -S --needed --noconfirm \
     base-devel \
     npm \
+    yarn \
     nodejs \
     python \
     python-pip \
@@ -27,23 +28,21 @@ sudo pacman -S --needed --noconfirm \
     docker \
     docker-compose
 
-
-if [ $XDG_CURRENT_DESKTOP == $GNOME ]; then
-    echo "[*] Gnome environment detected"
-    sudo pacman -S -S --needed --noconfirm \
-        gnome-tweaks
-
-elif [ $XDG_CURRENT_DESKTOP == $KDE ]; then
-    echo "[*] KDE environment detected"
-fi
-
 echo "[*] Installing snapd..."
 pamac install snapd
 sudo systemctl enable --now snapd.socket
 sudo snap install authy --beta
 sudo snap install code --classic
-sudo snap install gnome-calendar
 sudo snap install ao
+
+if [ $XDG_CURRENT_DESKTOP == $GNOME ]; then
+    echo "[*] Gnome environment detected"
+    sudo pacman -S -S --needed --noconfirm \
+        gnome-tweaks
+    sudo snap install gnome-calendar
+elif [ $XDG_CURRENT_DESKTOP == $KDE ]; then
+    echo "[*] KDE environment detected"
+fi
 
 echo "[*] Installing yay"
 # setting default answer
