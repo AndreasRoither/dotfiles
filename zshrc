@@ -75,7 +75,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Shorten directory names
 
-hash -d onedrive=/home/andreas/Insync/andi.roither@hotmail.de/OneDrive
+hash -d onedrive=/home/$USER/Insync/andi.roither@hotmail.de/OneDrive
 
 
 # zshrc aliases
