@@ -1,6 +1,12 @@
 - defaults:
     link:
       relink: true
+      ~/.zshrc:
+        force: true
+      ~/.bashrc:
+        force: true
+      ~/.bash_profile:
+        force: true
 
 - clean: ['~']
 
