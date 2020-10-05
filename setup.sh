@@ -36,14 +36,13 @@ ask() {
 distro=`lsb_release -si`
 path="./scripts/applications/dep-${distro}.sh"
 if [ ! -f "$path" ]; then
-  echo "Could not find file with dependencies for distro ${distro}. Aborting."
+  echo "Could not find file with dependencies for distro ${distro}."
   echo -e "\t ${path}"
-  exit 2
 fi
 
 ask "Dual boot windows time fix?" > && sudo timedatectl set-local-rtc 1 && sudo hwclock --systohc --localtime
 # adding user to sudoers
-ask "Add user to sudo?" Y && sudo usermod -aG wheel $USER
+ask "Add user to sudo?" Y && sudo usermod -aG wheel $USER && sudo usermod -aG sudo $USER
 ask "Install packages?" Y && bash ${path}
 ask "Setup ssh?" Y && bash ./scripts./ssh.sh
 ask "Setup zsh?" Y && git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh && chsh -s $(which zsh)
