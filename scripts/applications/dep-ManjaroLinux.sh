@@ -24,7 +24,7 @@ sudo pacman -S --needed --noconfirm \
     gamemode \
     htop \
     qbittorrent \
-    hub \
+    github-cli \
     docker \
     docker-compose
 
