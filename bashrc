@@ -27,7 +27,7 @@ fi
 # General
 # ----------------------
 alias lt='ls --human-readable --size -1 -S --classify'
-alias gh='history|grep'
+alias ghg='history|grep'
 alias left='ls -t -1'
 alias cpv='rsync -ah --info=progress2'
 alias untar='tar -zxvf '
