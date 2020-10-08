@@ -40,10 +40,11 @@ if [ ! -f "$path" ]; then
   echo -e "\t ${path}"
 fi
 
-ask "Dual boot windows time fix?" > && sudo timedatectl set-local-rtc 1 && sudo hwclock --systohc --localtime
+ask "Dual boot windows time fix?" Y && sudo timedatectl set-local-rtc 1 && sudo hwclock --systohc --localtime
 # adding user to sudoers
 ask "Add user to sudo?" Y && sudo usermod -aG wheel $USER && sudo usermod -aG sudo $USER
 ask "Install packages?" Y && bash ${path}
+ask "Install vscode extensions?" Y && bash ./scripts/vscode-plugins.sh
 ask "Setup ssh?" Y && bash ./scripts./ssh.sh
 ask "Setup zsh?" Y && git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh && chsh -s $(which zsh)
 # bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
