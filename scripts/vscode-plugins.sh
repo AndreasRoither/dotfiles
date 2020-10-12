@@ -55,6 +55,7 @@ vscodevim.vim
 wayou.vscode-todo-highlight
 xabikos.JavaScriptSnippets
 yzhang.markdown-all-in-one
+yzane.markdown-pdf
 Zignd.html-css-class-completion
 )
 
