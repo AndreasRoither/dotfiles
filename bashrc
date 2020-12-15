@@ -14,14 +14,26 @@ function start_agent {
     /usr/bin/ssh-add
 }
 
-if [ -f "${SSH_ENV}" ]; then
-     . ${SSH_ENV} > /dev/null
-     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-        start_agent;
-    }
+if [ "${GPG_ENV}" = true ]; then
+echo "Starting gpg agent.."
+    # ----------------------
+    # Start gpg for signing
+    # ---------------------
+    gpg-agent --daemon
 else
-    start_agent;
+    echo "GPG is not set."
+
+    if [ -f "${SSH_ENV}" ]; then
+        . ${SSH_ENV} > /dev/null
+        ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+            start_agent;
+        }
+    else
+        start_agent;
+    fi
 fi
+
+
 
 # ----------------------
 # General
@@ -59,7 +71,7 @@ function cd() {
 # ----------------------
 # Git Aliases
 # ----------------------
-alias startgit='cd `git rev-parse --show-toplevel` && git checkout master && git pull'
+alias startgit='cd `git rev-parse --show-toplevel` && git checkout main && git pull'
 alias cg='cd `git rev-parse --show-toplevel`' 
 
 alias ga='git add'
@@ -73,7 +85,7 @@ alias gcm='git commit --message'
 alias gcf='git commit --fixup'
 alias gco='git checkout'
 alias gcob='git checkout -b'
-alias gcom='git checkout master'
+alias gcom='git checkout main'
 alias gcos='git checkout staging'
 alias gcod='git checkout develop'
 alias gd='git diff'
