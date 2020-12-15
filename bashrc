@@ -2,6 +2,8 @@
 # Start ssh-agent
 # ----------------------
 SSH_ENV=$HOME/.ssh/environment
+GPG_START=true
+SSH_START=true
 
 # start the ssh-agent
 function start_agent {
@@ -14,15 +16,15 @@ function start_agent {
     /usr/bin/ssh-add
 }
 
-if [ "${GPG_ENV}" = true ]; then
+if [ "${GPG_START}" = true ]; then
 echo "Starting gpg agent.."
     # ----------------------
     # Start gpg for signing
     # ---------------------
     gpg-agent --daemon
-else
-    echo "GPG is not set."
+fi
 
+if [ "${SSH_START}" = true ]; then
     if [ -f "${SSH_ENV}" ]; then
         . ${SSH_ENV} > /dev/null
         ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
@@ -32,7 +34,6 @@ else
         start_agent;
     fi
 fi
-
 
 
 # ----------------------
