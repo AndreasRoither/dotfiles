@@ -46,6 +46,8 @@ alias cpv='rsync -ah --info=progress2'
 alias untar='tar -zxvf '
 alias wget='wget -c '
 alias ipe='curl ipinfo.io/ip'
+alias svenv='source venv/Scripts/activate'
+alias sdea='deactivate'
 
 ## get rid of command not found ##
 alias cd..='cd ..'
@@ -55,6 +57,7 @@ alias ..='cd ..'
 alias ...='cd ../../../'
 alias ....='cd ../../../../'
 alias .....='cd ../../../../'
+alias .2='cd ../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../..'
 
