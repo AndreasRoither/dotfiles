@@ -74,6 +74,11 @@ else
     echo "\t[-] Nordvpn was not found"
 fi
 
+echo "[*] Setting up docker"
+sudo systemctl start docker.service
+sudo systemctl enable docker.service
+sudo groupadd docker
+sudo usermod -aG docker $USER
 
 cd ~
 sudo rm -rf ~/.tempApp
