@@ -49,6 +49,6 @@ ask "Setup ssh?" Y && bash ./scripts./ssh.sh
 ask "Setup zsh?" Y && git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh && chsh -s $(which zsh)
 # bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ask "Copy window shortcuts?" Y && cp shortcuts.kksrc ~/.config/
-
+ask "Intellij watcher fix?" Y && sudo sh ./scripts/intellij_watcher_fix.sh
 
 exit 0
