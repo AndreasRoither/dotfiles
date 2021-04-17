@@ -7,4 +7,5 @@ if [ -e $conf_path ]; then
   echo "File $conf_path already exists!"
 else
   echo >> $conf_path
+  sudo sysctl -p --system
 fi
