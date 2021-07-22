@@ -94,3 +94,18 @@ function nkillswitch() {
         nordvpn set killswitch $1
     fi
 }
+
+# https://blog.meain.io/2019/automatically-ls-after-cd/
+# So, zsh lets you run some functions after running anything that will change directory. The commands that are run are listed in this variable 
+# called chpwd_functions and you can add more to the list.
+# So what we do here in the code is create a function(list_all in our case) which just does an ls and add it to the list of commands 
+# that will be run after a change in directory happens.
+# There is just some check happening to make sure that the function is not already in the list before we add it. That is what that if condition does.
+
+function list_all() {
+  emulate -L zsh
+  ls
+}
+if [[ ${chpwd_functions[(r)list_all]} != "list_all" ]];then
+  chpwd_functions=(${chpwd_functions[@]} "list_all")
+fi
