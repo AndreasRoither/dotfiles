@@ -46,7 +46,7 @@ ask "Add user to sudo?" Y && sudo usermod -aG wheel $USER && sudo usermod -aG su
 ask "Install packages?" Y && bash ${path}
 ask "Install vscode extensions?" Y && bash ./scripts/vscode-plugins.sh
 ask "Setup ssh?" Y && bash ./scripts./ssh.sh
-ask "Setup zsh?" Y && git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh && chsh -s $(which zsh) && git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1 && ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+ask "Setup zsh?" Y && git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh && chsh -s $(which zsh) && sudo git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1 && sudo ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
 # bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ask "Copy window shortcuts?" Y && cp shortcuts.kksrc ~/.config/
 ask "Intellij watcher fix?" Y && sudo sh ./scripts/intellij_watcher_fix.sh

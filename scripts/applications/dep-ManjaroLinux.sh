@@ -45,13 +45,7 @@ elif [ $XDG_CURRENT_DESKTOP == $KDE ]; then
 fi
 
 echo "[*] Installing yay"
-# setting default answer
-yay --save --answerclean 1 --answerdiff None
-sudo git clone https://aur.archlinux.org/yay.git && sudo chown -R $USER yay && cd yay && makepkg -si --noconfirm --neededqq && cd ..
-
-echo "[*] Adding required spotify keys"
-gpg --keyserver pool.sks-keyservers.net --recv-keys 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90
-gpg --keyserver pool.sks-keyservers.net --recv-keys 2EBF997C15BDA244B6EBF5D84773BD5E130D1D45
+sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm && cd ..
 
 echo "[*] Installing from aur"
 yay -S --noconfirm --nodiffmenu q\
@@ -69,6 +63,7 @@ if command -v nordvpn &> /dev/null
 then
     systemctl enable nordvpnd.service
     systemctl start nordvpnd.service
+    sudo usermod -aG nordvpn $USER
     nordvpn set technology nordlynx
 else
     echo "\t[-] Nordvpn was not found"
