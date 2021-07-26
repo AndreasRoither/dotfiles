@@ -236,3 +236,5 @@ alias drun=drun-fn
 alias dsp="docker system prune --all"
 alias dsr=dsr-fn
 
+. "$HOME/.cargo/env"
+source /home/andreas/temp/alacritty/extra/completions/alacritty.bash
