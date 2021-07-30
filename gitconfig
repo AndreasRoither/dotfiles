@@ -57,7 +57,7 @@
 [core]
 	excludesfile = ~/.gitignore_global
         autocrlf = input
-    editor = code --wait
+	editor = code --wait
 # Comment: This is to unlock Visual Studio Code as your Git diff and Git merge tool
 [merge]
     tool = vscode

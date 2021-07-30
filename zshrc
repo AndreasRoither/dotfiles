@@ -72,7 +72,11 @@ source $ZSH/oh-my-zsh.sh
 # old aliases from bash
 [[ -e ~/.bashrc ]] && emulate sh -c 'source ~/.bashrc'
 
+# Load Git completion
+zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
+fpath=(~/.zsh $fpath)
 
+autoload -Uz compinit && compinit
 # Shorten directory names
 
 hash -d onedrive=/home/$USER/Insync/andi.roither@hotmail.de/OneDrive

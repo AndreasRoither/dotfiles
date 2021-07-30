@@ -49,6 +49,11 @@ alias ipe='curl ipinfo.io/ip'
 alias svenv='source venv/Scripts/activate'
 alias sdea='deactivate'
 
+# dict
+alias startdict='cd ~/git/dict && ./setup.sh dev && source prepare.sh'
+alias repopdict='./fe-run ./ts-run scripts/db/loadDictionaryData.ts -t test && ./fe-run ./ts-run scripts/computeFurigana.ts'
+
+
 ## get rid of command not found ##
 alias cd..='cd ..'
  
