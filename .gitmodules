@@ -2,3 +2,6 @@
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
 	ignore = dirty
+[submodule "scripts/proton-ge-custom-updater"]
+	path = scripts/proton-ge-custom-updater
+	url = https://github.com/p-mng/proton-ge-custom-updater
