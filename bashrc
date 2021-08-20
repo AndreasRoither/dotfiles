@@ -138,6 +138,7 @@ function glf() { git log --all --grep="$1"; }
 #     dc             : docker-compose                                      #
 #     dcu            : docker-compose up -d                                #
 #     dcd            : docker-compose down                                 #
+#     dcs            : docker-compose stop                                 #
 #     dcr            : docker-compose run                                  #
 #     dex <container>: execute a bash shell inside the RUNNING <container> #
 #     di <container> : docker inspect <container>                          #
@@ -226,6 +227,7 @@ alias daws=d-aws-cli-fn
 alias dc=dc-fn
 alias dcu="docker-compose up -d"
 alias dcd="docker-compose down"
+alias dcs="docker-compose stop"
 alias dcr=dcr-fn
 alias dex=dex-fn
 alias di=di-fn
