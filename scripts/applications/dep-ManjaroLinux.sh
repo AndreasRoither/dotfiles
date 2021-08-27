@@ -40,6 +40,11 @@ if [ $XDG_CURRENT_DESKTOP == $GNOME ]; then
     sudo pacman -S -S --needed --noconfirm \
         gnome-tweaks
     sudo snap install gnome-calendar
+
+    # Fix gnome intellij shortcut conflicts
+    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up "['']"
+    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down "['']"
+    gsettings set org.gnome.shell.extensions.screenshot-window-sizer cycle-screenshot-sizes "['']"
 elif [ $XDG_CURRENT_DESKTOP == $KDE ]; then
     echo "[*] KDE environment detected"
 fi
