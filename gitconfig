@@ -1,6 +1,7 @@
 [user]
         name=Andreas Roither
         email=andi.roither@protonmail.com
+	signingkey = 01E537B866600945
 [alias]
         a = add
         aa = add .
