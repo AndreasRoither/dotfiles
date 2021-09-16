@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
+SILENT=false
 
 # Ask for input
 ask() {
-  # http://djm.me/ask
+  if [ "$SILENT" = true ] ; then return 0; fi
+
   while true; do
 
     if [ "${2:-}" = "Y" ]; then
@@ -40,6 +42,7 @@ if [ ! -f "$path" ]; then
   echo -e "\t ${path}"
 fi
 
+ask "Silent install?" Y && SILENT=true
 ask "Dual boot windows time fix?" Y && sudo timedatectl set-local-rtc 1 && sudo hwclock --systohc --localtime
 # adding user to sudoers
 ask "Add user to sudo?" Y && sudo usermod -aG wheel $USER && sudo usermod -aG sudo $USER
@@ -50,5 +53,6 @@ ask "Setup zsh?" Y && git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-
 # bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ask "Copy window shortcuts?" Y && cp shortcuts.kksrc ~/.config/
 ask "Intellij watcher fix?" Y && sudo sh ./scripts/intellij_watcher_fix.sh
+ask "Install themes?" Y && sudo sh ./scripts/theme.sh
 
 exit 0
