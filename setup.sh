@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 SILENT=false
+GNOME="GNOME"
+KDE="KDE"
 
 # Ask for input
 ask() {
@@ -37,8 +39,13 @@ ask() {
 
 distro=`lsb_release -si`
 path="./scripts/applications/dep-${distro}.sh"
+themePath="./themes/dep-${distro}.sh"
 if [ ! -f "$path" ]; then
   echo "Could not find file with dependencies for distro ${distro}."
+  echo -e "\t ${path}"
+fi
+if [ ! -f "$themePath" ]; then
+  echo "Could not find file with themes for distro ${distro}."
   echo -e "\t ${path}"
 fi
 
@@ -53,6 +60,7 @@ ask "Setup zsh?" Y && git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-
 # bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ask "Copy window shortcuts?" Y && cp shortcuts.kksrc ~/.config/
 ask "Intellij watcher fix?" Y && sudo sh ./scripts/intellij_watcher_fix.sh
-ask "Install themes?" Y && sudo sh ./scripts/theme.sh
+ask "Install themes?" Y && sudo sh ${themePath}
+
 
 exit 0
