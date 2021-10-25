@@ -1,11 +1,7 @@
-
-if [ -f ~/.bash_aliases ]; then
-. ~/.bash_aliases
+if [ -f ~/.aliases ]; then
+. ~/.aliases
 fi
 
-if [ -f ~/.ssh_gpg_agents ]; then
-. ~/.ssh_gpg_agents
+if [ -f ~/.ssh_gpg_agent ]; then
+. ~/.ssh_gpg_agent
 fi
-
-. "$HOME/.cargo/env"
-

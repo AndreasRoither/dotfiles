@@ -8,6 +8,8 @@
         force: true
       ~/.bash_profile:
         force: true
+      ~/.aliases:
+        force: true
 
 - clean: ['~']
 
@@ -22,6 +24,8 @@
     ~/.gitconfig: gitconfig
     ~/.gitignore_global: gitignore_global
     ~/.zshrc: zshrc
+    ~/.aliases: aliases
+    ~/.ssh_gpg_agent: ssh_gpg_agent
 - shell: 
   - 
     command: git submodule update --init --recursive
