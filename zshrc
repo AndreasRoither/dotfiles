@@ -29,13 +29,13 @@ source $ZSH/oh-my-zsh.sh
 # general setup
 # ----------------------
 # aliases
-if [ -f ~/.bash_aliases ]; then
-. ~/.bash_aliases
+if [ -f ~/.aliases ]; then
+. ~/.aliases
 fi
 
 # start ssh and gpg
-if [ -f ~/.ssh_gpg_agents ]; then
-. ~/.ssh_gpg_agents
+if [ -f ~/.ssh_gpg_agent ]; then
+. ~/.ssh_gpg_agent
 fi
 
 # Load Git completion

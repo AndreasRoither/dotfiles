@@ -76,3 +76,5 @@
 	helper = cache --timeout=2628000
 [commit]
 	gpgsign = true
+[mergetool]
+	keepBackup = false

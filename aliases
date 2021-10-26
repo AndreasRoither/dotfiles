@@ -12,7 +12,6 @@ alias svenv='source venv/Scripts/activate'
 alias sdea='deactivate'
 alias mv="mv -i"
 alias cp="cp -i"
-
 alias gm='gamemoded -r'
 
 # dict
