@@ -1,7 +1,7 @@
 [user]
         name=Andreas Roither
         email=andi.roither@protonmail.com
-	signingkey = 01E537B866600945
+	signingkey = B8416B5D4864B74D
 [alias]
         a = add
         aa = add .
@@ -57,7 +57,7 @@
 [grep]
 	lineNumber = true
 [core]
-	excludesfile = ~/.gitignore_global
+	excludesFile = ~/.gitignore_global
         autocrlf = input
 	editor = code --wait
 # Comment: This is to unlock Visual Studio Code as your Git diff and Git merge tool
