@@ -21,7 +21,7 @@ if [ "${GPG_START}" = true ]; then
     # ----------------------
     # Start gpg for signing
     # ---------------------
-    gpg-agent --quiet --daemon
+    gpg-agent --quiet --daemon --default-cache-ttl-ssh 86400
 fi
 
 if [ "${SSH_START}" = true ]; then
