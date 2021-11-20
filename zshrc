@@ -20,6 +20,15 @@ plugins=(
     dotenv
     zsh-autosuggestions
     zsh-syntax-highlighting
+    sudo
+    copydir
+    dirhistory
+    history
+    git-auto-fetch
+    git-prompt
+    gitignore
+    yarn
+    zsh-interactive-cd
 )
 
 source $ZSH/oh-my-zsh.sh

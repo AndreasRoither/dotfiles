@@ -26,7 +26,8 @@ sudo pacman -S --needed --noconfirm \
     qbittorrent \
     github-cli \
     docker \
-    docker-compose
+    docker-compose \
+    fzf
 
 echo "[*] Installing snapd..."
 pamac install snapd
