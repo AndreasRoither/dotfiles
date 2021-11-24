@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
-
 #!/bin/bash
+
+cd "$(dirname "${BASH_SOURCE[0]}")" \
+    && . "../util/utils.sh"
 
 # execute command
 # -------------------
@@ -62,8 +63,8 @@ yzhang.markdown-all-in-one
 Zignd.html-css-class-completion
 )
 
-echo "[*] Installing VSCode Plugins.."
+print_in_purple "\n • Installing VSCode Plugins..\n"
 
 for i in ${pkglist[@]}; do
-  code --install-extension $i
+  ./src/util/spinner.sh code --install-extension $i
 done

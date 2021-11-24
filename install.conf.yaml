@@ -14,26 +14,20 @@
 - clean: ['~']
 
 - create:
-    - ~/projects
+    - ~/git
 
 - link:
-    ~/.profile: profile
-    ~/.bash_profile: bash_profile
-    ~/.bashrc: bashrc
-    ~/.bash_logout: bash_logout
-    ~/.gitconfig: gitconfig
-    ~/.gitignore_global: gitignore_global
-    ~/.zshrc: zshrc
-    ~/.aliases: aliases
-    ~/.ssh_gpg_agent: ssh_gpg_agent
+    ~/.aliases: src/preferences/profile/aliases
+    ~/.bashrc: src/preferences/profile/bashrc
+    ~/.bash_profile: src/preferences/profile/bash_profile
+    ~/.bash_logout: src/preferences/profile/bash_logout
+    ~/.zshrc: src/preferences/profile/zshrc
+    ~/.ssh_gpg_agent: src/preferences/profile/ssh_gpg_agent
+    ~/.profile: src/preferences/profile/profile
+    ~/.gitconfig: src/preferences/git/gitconfig
+    ~/.gitignore_global: src/preferences/git/gitignore_global
+
 - shell: 
   - 
     command: git submodule update --init --recursive
     description: Update git submodules
-  - 
-    command: ./setup.sh
-    description: Start installing dependencies and general setup
-    quiet: false
-    stdin: true
-    stdout: true
-    stderr: true

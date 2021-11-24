@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 
-GNOME="GNOME"
-KDE="KDE"
-
 mkdir ~/.tempApp
 cd ~/.tempApp
 
-echo "[*] Installing Browsers..."
+print_in_purple "[*] Installing Browsers..."
 sudo pacman -S --needed --noconfirm firefox chromium
 
-echo "[*] Installing tools..."
+print_in_purple "[*] Installing tools..."
 sudo pacman -S --needed --noconfirm \
     base-devel \
     npm \
@@ -29,15 +26,15 @@ sudo pacman -S --needed --noconfirm \
     docker-compose \
     fzf
 
-echo "[*] Installing snapd..."
+print_in_purple "[*] Installing snapd..."
 pamac install snapd
 sudo systemctl enable --now snapd.socket
 sudo snap install authy --beta
 sudo snap install code --classic
 sudo snap install ao
 
-if [ $XDG_CURRENT_DESKTOP == $GNOME ]; then
-    echo "[*] Gnome environment detected"
+if [ $XDG_CURRENT_DESKTOP == "GNOME" ]; then
+    print_in_purple "[*] Gnome environment detected"
     sudo pacman -S -S --needed --noconfirm \
         gnome-tweaks
     sudo snap install gnome-calendar
@@ -46,14 +43,14 @@ if [ $XDG_CURRENT_DESKTOP == $GNOME ]; then
     gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up "['']"
     gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down "['']"
     gsettings set org.gnome.shell.extensions.screenshot-window-sizer cycle-screenshot-sizes "['']"
-elif [ $XDG_CURRENT_DESKTOP == $KDE ]; then
-    echo "[*] KDE environment detected"
+elif [ $XDG_CURRENT_DESKTOP == "KDE" ]; then
+    print_in_purple "[*] KDE environment detected"
 fi
 
-echo "[*] Installing yay"
+print_in_purple "[*] Installing yay"
 sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm && cd ..
 
-echo "[*] Installing from aur"
+print_in_purple "[*] Installing from aur"
 yay -S --noconfirm --nodiffmenu q\
     insync \
     spotify \
@@ -64,7 +61,7 @@ yay -S --noconfirm --nodiffmenu q\
     duf \
     postman-bin
 
-echo "[*] Setting up nordvpn"
+print_in_purple "[*] Setting up nordvpn"
 if command -v nordvpn &> /dev/null
 then
     systemctl enable nordvpnd.service
@@ -72,10 +69,10 @@ then
     sudo usermod -aG nordvpn $USER
     nordvpn set technology nordlynx
 else
-    echo "\t[-] Nordvpn was not found"
+    print_in_purple "\t[-] Nordvpn was not found"
 fi
 
-echo "[*] Setting up docker"
+print_in_purple "[*] Setting up docker"
 sudo systemctl start docker.service
 sudo systemctl enable docker.service
 sudo groupadd docker

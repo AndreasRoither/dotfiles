@@ -1,66 +1,110 @@
 #!/usr/bin/env bash
-SILENT=false
-GNOME="GNOME"
-KDE="KDE"
 
-# Ask for input
-ask() {
-  if [ "$SILENT" = true ] ; then return 0; fi
+declare -r GITHUB_REPOSITORY="AndreasRoither/dotfiles"
+declare -r DOTFILES_ORIGIN="git@github.com:$GITHUB_REPOSITORY.git"
 
-  while true; do
+declare dotfilesDirectory="$HOME/git/dotfiles"
 
-    if [ "${2:-}" = "Y" ]; then
-      prompt="Y/n"
-      default=Y
-    elif [ "${2:-}" = "N" ]; then
-      prompt="y/N"
-      default=N
-    else
-      prompt="y/n"
-      default=
-    fi
+declare -r CONFIG="install.conf.yaml"
+declare -r DOTBOT_DIR="dotbot"
+declare -r DOTBOT_BIN="bin/dotbot"
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-    # Ask the question
-    read -p "$1 [$prompt] " REPLY
+declare skipQuestions=false
 
-    # Default?
-    if [ -z "$REPLY" ]; then
-       REPLY=$default
-    fi
+# ----------------------------------------------------------------------
+# | Helper Functions                                                   |
+# ----------------------------------------------------------------------
 
-    # Check if the reply is valid
-    case "$REPLY" in
-      Y*|y*) return 0 ;;
-      N*|n*) return 1 ;;
+get_os() {
+    unameOut="$(uname -s)"
+    case "${unameOut}" in
+        Linux*)     os=Linux;;
+        Darwin*)    os=Mac;;
+        CYGWIN*)    os=Cygwin;;
+        MINGW*)     os=MinGw;;
+        *)          os="UNKNOWN:${unameOut}"
     esac
-
-  done
+    
+    if [ $os == "Linux" ]; then
+      distro=$(lsb_release -si)
+    fi
 }
 
-distro=`lsb_release -si`
-path="./scripts/applications/dep-${distro}.sh"
-themePath="./themes/dep-${distro}.sh"
-if [ ! -f "$path" ]; then
-  echo "Could not find file with dependencies for distro ${distro}."
-  echo -e "\t ${path}"
-fi
-if [ ! -f "$themePath" ]; then
-  echo "Could not find file with themes for distro ${distro}."
-  echo -e "\t ${path}"
-fi
+indent() { sed 's/^/    /'; }
 
-ask "Silent install?" Y && SILENT=true
-ask "Dual boot windows time fix?" Y && sudo timedatectl set-local-rtc 1 && sudo hwclock --systohc --localtime
-# adding user to sudoers
-ask "Add user to sudo?" Y && sudo usermod -aG wheel $USER && sudo usermod -aG sudo $USER
-ask "Install packages?" Y && bash ${path}
-ask "Install vscode extensions?" Y && bash ./scripts/vscode-plugins.sh
-ask "Setup ssh?" Y && bash ./scripts./ssh.sh
-ask "Setup zsh?" Y && git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh && chsh -s $(which zsh) && sudo git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1 && sudo ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme" && git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-# bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-ask "Copy window shortcuts?" Y && cp shortcuts.kksrc ~/.config/
-ask "Intellij watcher fix?" Y && sudo sh ./scripts/intellij_watcher_fix.sh
-ask "Install themes?" Y && sudo sh ${themePath}
+# ----------------------------------------------------------------------
+# | Main                                                               |
+# ----------------------------------------------------------------------
 
+main() {
+
+    get_os
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    # Load utils
+
+    if [ -x "src/util/utils.sh" ]; then
+        . "src/util/utils.sh" || exit 1
+    else
+      echo "Error loading utils."
+      exit 1
+    fi
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    print_in_purple "\n • Dotfiles install\n"
+    
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    ask_for_sudo
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    bash ./src/preferences/create_directories.sh
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    print_in_purple "\n • Updating dotbot..\n"
+    # update dotbot
+    git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
+    git submodule update --init --recursive "${DOTBOT_DIR}"
+
+    print_in_purple "\n • Starting dotbot...\n"
+    # start dotbot actions
+    "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}" | indent
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    skip_questions "$@" \
+        && skipQuestions=true
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    print_in_purple "\n • Looking for install scripts\n"
+
+    if [ "$os" == "MinGw" ]; then
+      print_in_blue "\tInstalling windows dependencies\n"
+      bash ./src/os/windows/dep-win10-winget.sh
+
+    elif [ "$os" == "Linux" ]; then
+
+      if [ ! -f "src/os/${distro}" ]; then
+        print_error "Could not find installation files for '${distro}'."
+        exit 1
+      fi
+
+      bash ./src/os/${distro}
+
+    else
+
+      print_error "${os} currently not supported."
+      exit 1
+    fi
+}
+
+main "$@"
 
 exit 0
