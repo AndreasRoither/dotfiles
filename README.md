@@ -16,7 +16,7 @@ Personal dotfiles for arch linux (Gnome and KDE and a bit of windows).
 Run the `./setup.sh` script
 
 ```bash
-git clone https://github.com/AndreasRoither/dotfiles && cd dotfiles && sh ./install
+git clone https://github.com/AndreasRoither/dotfiles && cd dotfiles && bash ./setup.sh
 ````
 
 ## Inspired / Code copied from
