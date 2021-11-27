@@ -67,12 +67,12 @@ main() {
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    print_in_purple "\n • Updating dotbot..\n"
+    print_in_purple "\n • Updating dotbot..\n\n"
     # update dotbot
     git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
     git submodule update --init --recursive "${DOTBOT_DIR}"
 
-    print_in_purple "\n • Starting dotbot...\n"
+    print_in_purple "\n • Starting dotbot...\n\n"
     # start dotbot actions
     "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}" | indent
 
@@ -83,7 +83,7 @@ main() {
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    print_in_purple "\n • Looking for install scripts\n"
+    print_in_purple "\n • Looking for install scripts\n\n"
 
     if [ "$os" == "MinGw" ]; then
       print_in_blue "\tInstalling windows dependencies\n"
@@ -91,12 +91,12 @@ main() {
 
     elif [ "$os" == "Linux" ]; then
 
-      if [ ! -f "src/os/${distro}" ]; then
+      if [ ! -d "src/os/${distro}" ]; then
         print_error "Could not find installation files for '${distro}'."
         exit 1
       fi
 
-      bash ./src/os/${distro}
+      bash ./src/os/${distro}/setup.sh
 
     else
 

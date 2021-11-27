@@ -20,7 +20,7 @@ fi
 
 ask_for_confirmation "Setup ssh?"
 if answer_is_yes; then
-  bash .
+  # TODO: Add ssh auto configuration
 fi
 
 ask_for_confirmation "Setup zsh?"
@@ -38,7 +38,7 @@ if answer_is_yes; then
     cd "$(dirname "${BASH_SOURCE[0]}")" && ../../util/spinner.sh bash ../vscode-plugins.sh
 fi
 
-ask_for_confirmation "Setup intellij watcher fix?"
+ask_for_confirmation "Windows dual boot time fix?"
 if answer_is_yes; then
     sudo timedatectl set-local-rtc 1 && sudo hwclock --systohc --localtime
 fi

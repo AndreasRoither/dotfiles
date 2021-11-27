@@ -110,8 +110,7 @@ execute() {
 
     # Show a spinner if the commands
     # require more time to complete.
-
-    bash spinner.sh "$cmdsPID" "$CMDS" "$MSG"
+    bash spinner.sh "$cmdsPID"
     # show_spinner 
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

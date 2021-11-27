@@ -19,10 +19,14 @@ Run the `./setup.sh` script
 git clone https://github.com/AndreasRoither/dotfiles && cd dotfiles && bash ./setup.sh
 ````
 
+For ssh key pre script run:
+```bash
+ssh-copy-id -i ~/.ssh/id_rsa.pub pi@192.168.8.50
+```
+
 ## Inspired / Code copied from
 [alrra](https://github.com/alrra/dotfiles)
 
 ## Technology / Stuff used
 
 [Dotbot](https://github.com/anishathalye/dotbot)
-[Proton Ge Custom Updater](https://github.com/p-mng/proton-ge-custom-updater)
