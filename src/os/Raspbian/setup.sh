@@ -24,6 +24,7 @@ if answer_is_yes; then
     sudo adduser andreas sudo
     sudo usermod -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,spi,i2c,gpio andreas
     sudo usermod -aG docker andreas
+    sudo usermod -aG docker $USER
 fi
 
 ask_for_confirmation "Setup zsh?"
