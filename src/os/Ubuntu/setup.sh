@@ -15,7 +15,7 @@ fi
 
 ask_for_confirmation "Setup packages?"
 if answer_is_yes; then
-    bash dep-Raspbian.sh
+    bash dep-Ubuntu.sh
 fi
 
 ask_for_confirmation "Add user andreas?"
@@ -29,7 +29,7 @@ fi
 
 ask_for_confirmation "Setup zsh?"
 if answer_is_yes; then
-  sudo git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh && sudo chsh -s $(which zsh) \
+  sudo git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh && chsh -s $(which zsh) \
     && sudo git clone https://github.com/spaceship-prompt/spaceship-prompt.git ~/.oh-my-zsh/themes/spaceship-prompt --depth=1 \
     && sudo ln -s ~/.oh-my-zsh/themes/spaceship-prompt/spaceship.zsh-theme ~/.oh-my-zsh/themes/spaceship.zsh-theme \
     && sudo git clone git://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/plugins/zsh-autosuggestions \

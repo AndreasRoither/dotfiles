@@ -53,6 +53,9 @@ install_package "Git" "git"
 install_package "cURL" "curl"
 install_package "ShellCheck" "shellcheck"
 install_package "xclip" "xclip"
+install_package "ntfs-3g" "ntfs-3g"
+install_package "fuse" "fuse"
+install_package "fzf" "fzf"
 
 print_in_purple "\n • Rasp 32 bit libseccomp fix\n\n"
 
