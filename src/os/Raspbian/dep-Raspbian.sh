@@ -56,6 +56,7 @@ install_package "xclip" "xclip"
 install_package "ntfs-3g" "ntfs-3g"
 install_package "fuse" "fuse"
 install_package "fzf" "fzf"
+install_package "fonts-powerline" "fonts-powerline"
 
 print_in_purple "\n • Rasp 32 bit libseccomp fix\n\n"
 
