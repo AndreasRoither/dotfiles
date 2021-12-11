@@ -5,7 +5,7 @@
 export ZSH="/home/andreas/.oh-my-zsh"
 
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="spaceship"
+ZSH_THEME="agnoster"
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/

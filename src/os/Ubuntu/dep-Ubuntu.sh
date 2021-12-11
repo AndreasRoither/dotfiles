@@ -48,3 +48,8 @@ install_package "cURL" "curl"
 install_package "ShellCheck" "shellcheck"
 install_package "xclip" "xclip"
 install_package "fzf" "fzf"
+install_package "fonts-powerline" "fonts-powerline"
+
+print_in_purple "\n • Nodejs\n\n"
+curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
+install_package "nodejs" "nodejs"

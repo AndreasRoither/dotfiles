@@ -40,6 +40,19 @@ else
   print_in_blue "Already installed."
 fi
 
+print_in_purple "\n • Docker-Compose\n\n"
+
+if ! cmd_exists "docker-compose"; then
+  install_package "libffi-dev" "libffi-dev"
+  install_package "libssl-dev" "libssl-dev"
+  install_package "python3-dev" "python3-dev"
+  install_package "python3" "python3"
+  install_package "python3-pip" "python3-pip"
+  sudo pip3 install docker-compose
+else
+  print_in_blue "Already installed."
+fi
+
 print_in_purple "\n • Portainer\n\n"
 
 sudo docker pull portainer/portainer-ce:latest || error "Failed to pull latest Portainer docker image!"
@@ -56,6 +69,7 @@ install_package "xclip" "xclip"
 install_package "ntfs-3g" "ntfs-3g"
 install_package "fuse" "fuse"
 install_package "fzf" "fzf"
+install_package "fonts-powerline" "fonts-powerline"
 
 print_in_purple "\n • Rasp 32 bit libseccomp fix\n\n"
 
