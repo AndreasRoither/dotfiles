@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=Nvidia Powermixer
+Exec=nvidia-settings -a "[gpu:0]/GpuPowerMizerMode=1"

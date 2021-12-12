@@ -2,6 +2,8 @@
 # Start ssh-agent
 # ----------------------
 SSH_ENV=$HOME/.ssh/environment
+GPG_HOME=$HOME/.gnupg
+SSH_HOME=$HOME/.ssh
 GPG_START=true
 SSH_START=true
 
@@ -16,7 +18,7 @@ function start_agent {
     /usr/bin/ssh-add
 }
 
-if [ "${GPG_START}" = true ]; then
+if [[ "${GPG_START}" = true && -d "${GPG_HOME}" ]]; then
     # echo "Starting gpg agent.."
     # ----------------------
     # Start gpg for signing
@@ -24,7 +26,7 @@ if [ "${GPG_START}" = true ]; then
     gpg-agent --quiet --daemon --default-cache-ttl-ssh 86400
 fi
 
-if [ "${SSH_START}" = true ]; then
+if [[ "${SSH_START}" = true && -d "${SSH_HOME}" ]]; then
     if [ -f "${SSH_ENV}" ]; then
         . ${SSH_ENV} > /dev/null
         ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
