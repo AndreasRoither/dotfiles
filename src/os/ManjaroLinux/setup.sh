@@ -52,6 +52,14 @@ fi
   # TODO: Add ssh auto configuration
 #fi
 
+ask_for_confirmation "Fix ssh permissions?" 
+if answer_is_yes; then
+  sudo chmod 700 ~/.ssh/
+  sudo chmod 600 ~/.ssh/*
+  sudo chown -R ${USER} ~/.ssh/
+  sudo chgrp -R ${USER} ~/.ssh/
+fi
+
 ask_for_confirmation "Setup zsh?"
 if answer_is_yes; then
 
@@ -92,7 +100,7 @@ ask_for_confirmation "Copy window shortcuts?"
 if answer_is_yes; then
     cp shortcuts.kksrc ~/.config/
 fi
-y
+
 ask_for_confirmation "Install themes?"
 if answer_is_yes; then
   ask "What is your Desktop Environment? (KDE/GNOME/XFCE) "
