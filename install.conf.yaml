@@ -26,6 +26,8 @@
     ~/.profile: src/preferences/profile/profile
     ~/.gitconfig: src/preferences/git/gitconfig
     ~/.gitignore_global: src/preferences/git/gitignore_global
+    ~/.config/autostart/powermixer.desktop: src/util/powermixer.desktop
+    ~/.config/autostart/tilda.desktop: src/util/tilda.desktop
 
 - shell: 
   - 
