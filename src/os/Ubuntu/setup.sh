@@ -20,10 +20,13 @@ fi
 
 ask_for_confirmation "Add user andreas?"
 if answer_is_yes; then
-    sudo adduser andreas
-    sudo adduser andreas sudo
+    sudo adduser $USER
+    sudo adduser $USER sudo
     sudo usermod -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,spi,i2c,gpio andreas
-    sudo usermod -aG docker andreas
+fi
+
+ask_for_confirmation "Add user to docker?"
+if answer_is_yes; then
     sudo usermod -aG docker $USER
 fi
 
