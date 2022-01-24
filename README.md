@@ -28,5 +28,5 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub pi@192.168.8.50
 [alrra](https://github.com/alrra/dotfiles)
 
 ## Technology / Stuff used
-
+[Winget](https://www.microsoft.com/en-us/p/app-installer/9nblggh4nns1)
 [Dotbot](https://github.com/anishathalye/dotbot)
