@@ -24,6 +24,12 @@ For ssh key pre script run:
 ssh-copy-id -i ~/.ssh/id_rsa.pub pi@192.168.8.50
 ```
 
+Setting windows execution policy:
+```
+set-executionpolicy remotesigned
+set-executionpolicy restricted
+```
+
 ## Inspired / Code copied from
 [alrra](https://github.com/alrra/dotfiles)
 
