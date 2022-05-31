@@ -21,7 +21,7 @@ plugins=(
     zsh-autosuggestions
     zsh-syntax-highlighting
     sudo
-    copydir
+    copypath
     dirhistory
     history
     git-auto-fetch
@@ -72,3 +72,6 @@ function list_all() {
 if [[ ${chpwd_functions[(r)list_all]} != "list_all" ]];then
   chpwd_functions=(${chpwd_functions[@]} "list_all")
 fi
+
+# starship
+eval "$(starship init zsh)"

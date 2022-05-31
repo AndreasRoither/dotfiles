@@ -1,8 +1,9 @@
 [user]
     name=Andreas Roither
     email=andi.roither@protonmail.com
-    signingkey = B8416B5D4864B74D
 [alias]
+    rso = remote show origin
+    me = config user.name
     a = add
     aa = add .
     aaa = add --all
@@ -12,6 +13,8 @@
     c = commit
     cm = commit --message
     cf = commit --fixup
+
+    # checkout
     co = checkout
     cob = checkout -b
     com = checkout master
@@ -20,25 +23,41 @@
     d = diff
     da = diff HEAD
     i = init
+
+    # log aliases
     ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
     ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
     lg = log --graph --oneline --decorate --all
     ld = log --pretty=format:"%h %ad %s" --date=short --all
+    graph = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+
+    # merge
     m = merge --no-ff
     ma = merge --abort
     mc = merge --continue
+
+    # pull / rebase
     p = pull
     pr = pull --rebase
     r = rebase
+    ir = reabse -i HEAD~
+
+    # status
     s = status
     ss = status --short
     stat = show --stat --oneline
+
+    # stash
     st = stash
     sta = stash apply
     std = stash drop
     stl = stash list
     stp = stash pop
     sts = stash save
+
+    # find top level of current repo
+    top = !git rev-parse --show-toplevel
+
     # Get the current branch name (not so useful in itself, but used in
     # other aliases)
     branch-name = "!git rev-parse --abbrev-ref HEAD"
@@ -63,6 +82,15 @@
 # Comment: This is to unlock Visual Studio Code as your Git diff and Git merge tool
 [merge]
     tool = vscode
+[mergetool]
+    # Clean up backup files created by merge tools on tool exit
+    keepBackup = false
+    # Clean up temp files created by merge tools on tool exit
+    keepTemporaries = false
+    # Put the temp files in a dedicated dir anyway
+    writeToTemp = true
+    # Auto-accept file prompts when launching merge tools
+    prompt = false
 [mergetool "vscode"]
     cmd = code --wait $MERGED
 [diff]
@@ -78,18 +106,18 @@
 	gpgsign = true
 [mergetool]
 	keepBackup = false
-[gpg]
-	program = gpg
 [pretty]
-    custom = "%C(magenta)%h%C(red)%d %C(yellow)%ar %C(green)%s %C(yellow)(%an)"
+    custom = "%C(green)%h%C(red)%d %C(yellow)%ar %C(white)%s %C(blue)(%an)"
     #                     │        │            │            │             └─ author name
     #                     │        │            │            └─ message
     #                     │        │            └─ date (relative)
     #                     │        └─ decorations (branch, heads or tags)
-    #                     └─ hash (abbreviated)
+    #                    └─ hash (abbreviated)
 [init]
     defaultBranch = main
 [push]
     # Make `git push` automatically push relevant
     # annotated tags when pushing branches out.
     followTags = true
+[format]
+	pretty = %C(green)%h%C(red)%d %C(yellow)%ar %C(white)%s %C(blue)(%an)
