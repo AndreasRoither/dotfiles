@@ -79,6 +79,7 @@
 	excludesFile = ~/.gitignore_global
     autocrlf = input
 	editor = code --wait
+	fsmonitor = true
 # Comment: This is to unlock Visual Studio Code as your Git diff and Git merge tool
 [merge]
     tool = vscode

@@ -5,3 +5,5 @@ fi
 if [ -f ~/.ssh_gpg_agent ]; then
 . ~/.ssh_gpg_agent
 fi
+
+eval "$(starship init bash)"
