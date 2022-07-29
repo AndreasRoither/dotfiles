@@ -53,3 +53,8 @@ install_package "fonts-powerline" "fonts-powerline"
 print_in_purple "\n • Nodejs\n\n"
 curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
 install_package "nodejs" "nodejs"
+
+print_in_purple "\n • Rust\n\n"
+curl https://sh.rustup.rs -sSf | sh
+print_in_purple "\n • Starship\n\n"
+cargo install starship --locked

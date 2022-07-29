@@ -7,8 +7,21 @@ cd "$(dirname "${BASH_SOURCE[0]}")" \
 
 print_in_purple "\n • Ubuntu Install\n\n"
 
-ask_for_confirmation "Update system?"
+ask_for_confirmation "Setup nala?"
 if answer_is_yes; then
+    echo "deb https://deb.volian.org/volian/ scar main" | sudo tee /etc/apt/sources.list.d/volian-archive-scar-unstable.list
+    wget -qO - https://deb.volian.org/volian/scar.key | sudo tee /etc/apt/trusted.gpg.d/volian-archive-scar-unstable.gpg > /dev/null
+
+    ask_for_confirmation "Ubuntu 22.04 / Debian Sid and newer?"
+    if answer_is_yes; then
+        sudo apt update && sudo apt install nala
+    else
+        sudo apt update && sudo apt install nala-legacy
+    fi
+
+    sudo nala fetch
+    sudo nala update && sudo nala upgrade
+else
     sudo apt-get update
     sudo apt-get upgrade
 fi
@@ -28,6 +41,15 @@ fi
 ask_for_confirmation "Add user to docker?"
 if answer_is_yes; then
     sudo usermod -aG docker $USER
+fi
+
+ask_for_confirmation "Setup gpg?" 
+if answer_is_yes; then
+    gpg --full-generate-key
+    gpg --list-secret-keys --keyid-format=long | grep sec | grep -o -P '(?<=/)[A-Z0-9]*' | gpg --armor --export
+
+    print_in_blue "Setting git gpg key"
+    git config --global user.signingkey $(gpg --list-secret-keys --keyid-format=long | grep sec | grep -o -P '(?<=/)[A-Z0-9]*')
 fi
 
 ask_for_confirmation "Fix ssh permissions?" 
