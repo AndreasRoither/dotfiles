@@ -13,6 +13,7 @@ alias sdea='deactivate'
 alias mv="mv -i"
 alias cp="cp -i"
 alias gm='gamemoded -r'
+alias resource="pkill gpg-agent && pkill ssh-agent && source ~/.zshrc"
 
 # dict
 alias startdict='cd ~/git/dict && ./setup.sh dev && source prepare.sh'
