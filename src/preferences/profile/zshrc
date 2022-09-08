@@ -16,6 +16,7 @@ plugins=(
     git
     golang
     docker
+    docker-compose
     vscode
     dotenv
     zsh-autosuggestions
@@ -29,6 +30,7 @@ plugins=(
     gitignore
     yarn
     zsh-interactive-cd
+    fzf
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -72,6 +74,12 @@ function list_all() {
 if [[ ${chpwd_functions[(r)list_all]} != "list_all" ]];then
   chpwd_functions=(${chpwd_functions[@]} "list_all")
 fi
+
+# wsl 2 display
+# https://shouv.medium.com/how-to-run-cypress-on-wsl2-989b83795fb6
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
+sudo /etc/init.d/dbus start &> /dev/null
+
 
 # starship
 eval "$(starship init zsh)"

@@ -54,6 +54,11 @@ print_in_purple "\n • Nodejs\n\n"
 curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
 install_package "nodejs" "nodejs"
 
+print_in_purple "\n • Yarn\n\n"
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update && install_package yarn
+
 print_in_purple "\n • Rust\n\n"
 curl https://sh.rustup.rs -sSf | sh
 print_in_purple "\n • Starship\n\n"

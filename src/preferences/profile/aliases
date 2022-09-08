@@ -17,7 +17,7 @@ alias resource="pkill gpg-agent && pkill ssh-agent && source ~/.zshrc"
 
 # dict
 alias startdict='cd ~/git/dict && ./setup.sh dev && source prepare.sh'
-alias repopdict='./fe-run ./ts-run scripts/db/loadDictionaryData.ts -t test && ./fe-run ./ts-run scripts/computeFurigana.ts'
+alias repopdict='./fe-run ./ts-run scripts/db/loadDictionaryData.ts && ./fe-run ./ts-run scripts/db/loadDictionaryData/computeFurigana.ts'
 
 
 ## get rid of command not found ##

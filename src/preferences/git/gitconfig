@@ -80,6 +80,8 @@
     autocrlf = input
 	editor = code --wait
 	fsmonitor = true
+	preloadindex = true
+	fscache = true
 # Comment: This is to unlock Visual Studio Code as your Git diff and Git merge tool
 [merge]
     tool = vscode
@@ -122,3 +124,5 @@
     followTags = true
 [format]
 	pretty = %C(green)%h%C(red)%d %C(yellow)%ar %C(white)%s %C(blue)(%an)
+[gc]
+	auto = 256
