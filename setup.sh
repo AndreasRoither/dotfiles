@@ -42,7 +42,6 @@ main() {
     get_os
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     # Load utils
 
     if [ -x "src/util/utils.sh" ]; then
@@ -54,27 +53,34 @@ main() {
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    print_in_purple "\n • Dotfiles install\n"
-    
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    print_in_purple "\n• Dotfiles install starting\n"
 
     ask_for_sudo
 
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # Make sure gum is installed
+    if [ "$os" == "MinGw" ]; then
+      print_in_blue "\tInstalling gum\n"
+      start microsoft-edge:https://github.com/charmbracelet/gum/releases/download/v0.6.0/gum_0.6.0_Windows_x86_64.zip
+      echo "Waiting for you to install gum manually"
+      echo "Press any key if complete..."
+      read -n 1 -s
 
-    bash ./src/preferences/create_directories.sh
+    elif [ "$os" == "Linux" ]; then
+      if [ "$distro" == "Ubuntu" ]; then
+        echo 'deb [trusted=yes] https://repo.charm.sh/apt/ /' | sudo tee /etc/apt/sources.list.d/charm.list && sudo apt update && sudo apt install gum
+      elif [ "$os" == "ManjaroLinux" ]; then
+        pacman -S gum
+    fi
 
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    print_in_purple "\n • Updating dotbot..\n\n"
     # update dotbot
-    git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
-    git submodule update --init --recursive "${DOTBOT_DIR}"
+    gum spin --spinner dot --title "Updating dotbot" -- git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive && git submodule update --init --recursive "${DOTBOT_DIR}"
+    gum confirm "Create directories?" && bash ./src/preferences/create_directories.sh
 
-    print_in_purple "\n • Starting dotbot...\n\n"
+
+    print_in_purple "\n• Starting dotbot...\n\n"
     # start dotbot actions
     "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}" | indent
+    
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -83,7 +89,7 @@ main() {
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    print_in_purple "\n • Looking for install scripts\n\n"
+    print_in_purple "\n• Looking for install scripts\n\n"
 
     if [ "$os" == "MinGw" ]; then
       print_in_blue "\tInstalling windows dependencies\n"
@@ -99,7 +105,6 @@ main() {
       bash ./src/os/${distro}/setup.sh
 
     else
-
       print_error "${os} currently not supported."
       exit 1
     fi

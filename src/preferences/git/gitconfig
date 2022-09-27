@@ -1,6 +1,7 @@
 [user]
     name=Andreas Roither
     email=andi.roither@protonmail.com
+	signingkey = 6F6D0BEF430A095A
 [alias]
     rso = remote show origin
     me = config user.name

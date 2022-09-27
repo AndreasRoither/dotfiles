@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-cd "$(dirname "${BASH_SOURCE[0]}")" \
-    && . "../../util/utils.sh"
+cd "$(dirname "${BASH_SOURCE[0]}")" &&
+    . "../../util/utils.sh"
 
 mkdir ~/.tempApp
 cd ~/.tempApp
@@ -57,8 +57,7 @@ print_in_purple "   [*] Installing yay\n"
 sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm && cd ..
 
 print_in_purple "   [*] Installing from aur\n"
-yay -S --noconfirm --nodiffmenu q\
-    insync \
+yay -S --noconfirm --nodiffmenu q insync \
     spotify \
     yuzu-git \
     jetbrains-toolbox \
@@ -66,8 +65,7 @@ yay -S --noconfirm --nodiffmenu q\
     postman-bin
 
 print_in_purple "   [*] Setting up nordvpn\n"
-if command -v nordvpn &> /dev/null
-then
+if command -v nordvpn &>/dev/null; then
     sudo systemctl enable nordvpnd.service
     sudo systemctl start nordvpnd.service
     sudo usermod -aG nordvpn $USER

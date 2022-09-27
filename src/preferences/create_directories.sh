@@ -1,6 +1,5 @@
-
-cd "$(dirname "${BASH_SOURCE[0]}")" \
-    && . "../util/utils.sh"
+cd "$(dirname "${BASH_SOURCE[0]}")" &&
+    . "../util/utils.sh"
 
 create_directories() {
     declare -a DIRECTORIES=(
@@ -14,9 +13,4 @@ create_directories() {
     done
 }
 
-main() {
-    print_in_purple "\n • Creating directories\n\n"
-    create_directories
-}
-
-main
+create_directories

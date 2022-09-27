@@ -1,19 +1,17 @@
 #!/bin/bash
 
-cd "$(dirname "${BASH_SOURCE[0]}")" \
-    && . "../../util/utils.sh"
+cd "$(dirname "${BASH_SOURCE[0]}")" &&
+    . "../../util/utils.sh"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 print_in_purple "\n • Ubuntu Install\n\n"
 
-ask_for_confirmation "Setup nala?"
-if answer_is_yes; then
+if gum confirm "Setup nala?"; then
     echo "deb https://deb.volian.org/volian/ scar main" | sudo tee /etc/apt/sources.list.d/volian-archive-scar-unstable.list
-    wget -qO - https://deb.volian.org/volian/scar.key | sudo tee /etc/apt/trusted.gpg.d/volian-archive-scar-unstable.gpg > /dev/null
+    wget -qO - https://deb.volian.org/volian/scar.key | sudo tee /etc/apt/trusted.gpg.d/volian-archive-scar-unstable.gpg >/dev/null
 
-    ask_for_confirmation "Ubuntu 22.04 / Debian Sid and newer?"
-    if answer_is_yes; then
+    if gum confirm "Ubuntu 22.04 / Debian Sid and newer?"; then
         sudo apt update && sudo apt install nala
     else
         sudo apt update && sudo apt install nala-legacy
@@ -26,25 +24,21 @@ else
     sudo apt-get upgrade
 fi
 
-ask_for_confirmation "Setup packages?"
-if answer_is_yes; then
+if gum confirm "Setup packages?"; then
     bash dep-Ubuntu.sh
 fi
 
-ask_for_confirmation "Add user andreas?"
-if answer_is_yes; then
+if gum confirm "Add user andreas?"; then
     sudo adduser $USER
     sudo adduser $USER sudo
     sudo usermod -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,spi,i2c,gpio andreas
 fi
 
-ask_for_confirmation "Add user to docker?"
-if answer_is_yes; then
+if gum confirm "Add user to docker?"; then
     sudo usermod -aG docker $USER
 fi
 
-ask_for_confirmation "Setup gpg?" 
-if answer_is_yes; then
+if gum confirm "Setup gpg?"; then
     gpg --full-generate-key
     gpg --list-secret-keys --keyid-format=long | grep sec | grep -o -P '(?<=/)[A-Z0-9]*' | gpg --armor --export
 
@@ -52,34 +46,30 @@ if answer_is_yes; then
     git config --global user.signingkey $(gpg --list-secret-keys --keyid-format=long | grep sec | grep -o -P '(?<=/)[A-Z0-9]*')
 fi
 
-ask_for_confirmation "Fix ssh permissions?" 
-if answer_is_yes; then
-  sudo chmod 700 ~/.ssh/
-  sudo chmod 600 ~/.ssh/*
-  sudo chown -R ${USER} ~/.ssh/
-  sudo chgrp -R ${USER} ~/.ssh/
+if gum confirm "Fix ssh permissions?"; then
+    sudo chmod 700 ~/.ssh/
+    sudo chmod 600 ~/.ssh/*
+    sudo chown -R ${USER} ~/.ssh/
+    sudo chgrp -R ${USER} ~/.ssh/
 fi
 
-ask_for_confirmation "Setup zsh?"
-if answer_is_yes; then
+if gum confirm "Setup zsh?"; then
 
     if [ -d ~/.oh-my-zsh ]; then
         print_warning "Zsh directory already exists."
-    else 
-        sudo git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh && chsh -s $(which zsh) \
-            && sudo git clone https://github.com/zsh-users/zsh-autosuggestions.git ~/.oh-my-zsh/plugins/zsh-autosuggestions \
-            && sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/plugins/zsh-syntax-highlighting
+    else
+        sudo git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh && chsh -s $(which zsh) &&
+            sudo git clone https://github.com/zsh-users/zsh-autosuggestions.git ~/.oh-my-zsh/plugins/zsh-autosuggestions &&
+            sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/plugins/zsh-syntax-highlighting
     fi
 
-    ask_for_confirmation "Install spaceship theme?"
-    if answer_is_yes; then
-        sudo git clone https://github.com/spaceship-prompt/spaceship-prompt.git ~/.oh-my-zsh/themes/spaceship-prompt --depth=1 \
-            && sudo ln -s ~/.oh-my-zsh/themes/spaceship-prompt/spaceship.zsh-theme ~/.oh-my-zsh/themes/spaceship.zsh-theme
+    if gum confirm "Install spaceship theme?"; then
+        sudo git clone https://github.com/spaceship-prompt/spaceship-prompt.git ~/.oh-my-zsh/themes/spaceship-prompt --depth=1 &&
+            sudo ln -s ~/.oh-my-zsh/themes/spaceship-prompt/spaceship.zsh-theme ~/.oh-my-zsh/themes/spaceship.zsh-theme
         sed -i --follow-symlinks 's|ZSH_THEME="agnoster"|ZSH_THEME="spaceship"|g;' ~/.zshrc
     fi
 
-    ask_for_confirmation "Install powerlevel10k theme?"
-    if answer_is_yes; then
+    if gum confirm "Install powerlevel10k theme?"; then
         sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/themes/powerlevel10k
         sed -i --follow-symlinks 's|ZSH_THEME="agnoster"|ZSH_THEME="powerlevel10k/powerlevel10k"|g;' ~/.zshrc
         # needs ZSH_THEME="powerlevel10k/powerlevel10k" in .zshrc

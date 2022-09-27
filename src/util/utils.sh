@@ -1,27 +1,10 @@
 #!/bin/bash
 
-answer_is_yes() {
-    [[ "$REPLY" =~ ^[Yy]$ ]] \
-        && return 0 \
-        || return 1
-}
-
-ask() {
-    print_question "$1"
-    read -r
-}
-
-ask_for_confirmation() {
-    print_question "$1 (y/n) "
-    read -r -n 1
-    printf "\n"
-}
-
 ask_for_sudo() {
 
     # Ask for the administrator password upfront.
 
-    sudo -v &> /dev/null
+    sudo -v &>/dev/null
 
     # Update existing `sudo` time stamp
     # until this script has finished.
@@ -32,8 +15,7 @@ ask_for_sudo() {
         sudo -n true
         sleep 60
         kill -0 "$$" || exit
-    done &> /dev/null &
-
+    done &>/dev/null &
 }
 
 get_answer() {
@@ -41,18 +23,18 @@ get_answer() {
 }
 
 cmd_exists() {
-    command -v "$1" &> /dev/null
+    command -v "$1" &>/dev/null
 }
 
 is_git_repository() {
-    git rev-parse &> /dev/null
+    git rev-parse &>/dev/null
 }
 
 skip_questions() {
-     while :; do
+    while :; do
         case $1 in
-            -y|--yes) return 0;;
-                   *) break;;
+        -y | --yes) return 0 ;;
+        *) break ;;
         esac
         shift 1
     done
@@ -61,22 +43,17 @@ skip_questions() {
 }
 
 kill_all_subprocesses() {
-
     local i=""
 
     for i in $(jobs -p); do
         kill "$i"
-        wait "$i" &> /dev/null
+        wait "$i" &>/dev/null
     done
-
 }
 
-
 set_trap() {
-
-    trap -p "$1" | grep "$2" &> /dev/null \
-        || trap '$2' "$1"
-
+    trap -p "$1" | grep "$2" &>/dev/null ||
+        trap '$2' "$1"
 }
 
 execute() {
@@ -101,42 +78,29 @@ execute() {
     # shellcheck disable=SC2261
 
     eval "$CMDS" \
-        &> /dev/null \
-        2> "$TMP_FILE" &
+        &>/dev/null \
+        2>"$TMP_FILE" &
 
     cmdsPID=$!
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    # Show a spinner if the commands
-    # require more time to complete.
-    bash spinner.sh "$cmdsPID"
-    # show_spinner 
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     # Wait for the commands to no longer be executing
     # in the background, and then get their exit code.
 
-    wait "$cmdsPID" &> /dev/null
+    wait "$cmdsPID" &>/dev/null
     exitCode=$?
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     # Print output based on what happened.
 
-    print_result $exitCode "$MSG"
-
     if [ $exitCode -ne 0 ]; then
-        print_error_stream < "$TMP_FILE"
+        print_error_stream <"$TMP_FILE"
     fi
-
     rm -rf "$TMP_FILE"
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     return $exitCode
-
 }
 
 mkd() {
@@ -162,19 +126,18 @@ print_result() {
     fi
 
     return "$1"
-
 }
 
 print_success() {
-    print_in_green "   [✔] $1\n"
+    print_in_green " [✔] $1\n"
 }
 
 print_warning() {
-    print_in_yellow "   [!] $1\n"
+    print_in_yellow " [!] $1\n"
 }
 
 print_error() {
-    print_in_red "   [✖] $1 $2\n"
+    print_in_red " [✖] $1 $2\n"
 }
 
 print_error_stream() {
@@ -185,9 +148,9 @@ print_error_stream() {
 
 print_in_color() {
     printf "%b" \
-        "$(tput setaf "$2" 2> /dev/null)" \
+        "$(tput setaf "$2" 2>/dev/null)" \
         "$1" \
-        "$(tput sgr0 2> /dev/null)"
+        "$(tput sgr0 2>/dev/null)"
 }
 
 print_in_green() {
@@ -211,5 +174,5 @@ print_in_blue() {
 }
 
 print_question() {
-    print_in_yellow "   [?] $1"
+    print_in_yellow " [?] $1"
 }

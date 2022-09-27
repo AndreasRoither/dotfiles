@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-cd "$(dirname "${BASH_SOURCE[0]}")" \
-    && . "utils.sh"
+cd "$(dirname "${BASH_SOURCE[0]}")" &&
+    . "utils.sh"
 
 local sshKeyFileName="$HOME/.ssh/id_rsa"
 
@@ -12,8 +12,7 @@ local sshKeyFileName="$HOME/.ssh/id_rsa"
 
 if [ -f "$sshKeyFileName" ]; then
     sshKeyFileName="$(mktemp -u "$HOME/.ssh/github_XXXXX")"
-else 
+else
     ssh-keygen -t rsa -b 4096 -C "andi.roither@protonmail.com" && eval "$(ssh-agent -s)" && ssh-add $HOME/.ssh/id_rsa
 fi
 cat ${sshKeyFileName}.pub
-
