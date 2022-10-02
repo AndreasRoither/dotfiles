@@ -22,7 +22,10 @@ package_is_installed() {
     dpkg -s "$1" &>/dev/null
 }
 
-install_package "Utility" "zsh curl shellcheck xclip fzf tilda"
+install_package "Utility" "zsh curl shellcheck xclip fzf tilda steam lutris python3-pip snapd"
+pip3 install protonup
+flatpak install flathub com.usebottles.bottles
+sudo snap install authy
 install_package "Development" "cmake build-essential git"
 curl https://sh.rustup.rs -sSf | sh
 curl -sS https://starship.rs/install.sh | sh

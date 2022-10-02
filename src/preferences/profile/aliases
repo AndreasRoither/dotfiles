@@ -14,15 +14,15 @@ alias mv="mv -i"
 alias cp="cp -i"
 alias gm='gamemoded -r'
 alias resource="pkill gpg-agent && pkill ssh-agent && source ~/.zshrc"
+alias ghistory="gum filter < $HISTFILE --height 20"
 
 # dict
 alias startdict='cd ~/git/dict && ./setup.sh dev && source prepare.sh'
 alias repopdict='./fe-run ./ts-run scripts/db/loadDictionaryData.ts && ./fe-run ./ts-run scripts/db/loadDictionaryData/computeFurigana.ts'
 
-
 ## get rid of command not found ##
 alias cd..='cd ..'
- 
+
 ## a quick way to get out of current directory ##
 alias ..='cd ..'
 alias ...='cd ../../../'
@@ -33,16 +33,15 @@ alias .4='cd ../../../../'
 alias .5='cd ../../../../..'
 
 function cd() {
-    DIR="$*";
-        # if no DIR given, go home
-        if [ $# -lt 1 ]; then
-                DIR=$HOME;
-    fi;
-    builtin cd "${DIR}" && \
-    # use your preferred ls command
+    DIR="$*"
+    # if no DIR given, go home
+    if [ $# -lt 1 ]; then
+        DIR=$HOME
+    fi
+    builtin cd "${DIR}" &&
+        # use your preferred ls command
         ls -F --color=auto
 }
-
 
 # ----------------------
 # nordvpn
@@ -63,14 +62,14 @@ function nkillswitch() {
 # Git Aliases
 # ----------------------
 alias startgit='cd `git rev-parse --show-toplevel` && git checkout main && git pull'
-alias cg='cd `git rev-parse --show-toplevel`' 
+alias cg='cd `git rev-parse --show-toplevel`'
 
 alias ga='git add'
 alias gaa='git add .'
 alias gaaa='git add --all'
 alias gau='git add --update'
 alias gb='git branch'
-alias gbd='git branch --delete '
+alias gbd=g"git branch | cut -c 3- | gum choose --no-limit | xargs git branch -D"
 alias gc='git commit'
 alias gcm='git commit --message'
 alias gcf='git commit --fixup'
@@ -79,6 +78,7 @@ alias gcob='git checkout -b'
 alias gcom='git checkout main'
 alias gcos='git checkout staging'
 alias gcod='git checkout develop'
+alias gprc="gh pr list | cut -f1,2 | gum choose | cut -f1 | xargs gh pr checkout"
 alias gd='git diff'
 alias gda='git diff HEAD'
 alias gi='git init'
@@ -104,7 +104,6 @@ alias gsts='git stash save'
 # ----------------------
 # Git log find by commit message
 function glf() { git log --all --grep="$1"; }
-
 
 ############################################################################
 #                                                                          #
@@ -138,71 +137,70 @@ function glf() { git log --all --grep="$1"; }
 ############################################################################
 
 function dnames-fn {
-	for ID in `docker ps | awk '{print $1}' | grep -v 'CONTAINER'`
-	do
-    	docker inspect $ID | grep Name | head -1 | awk '{print $2}' | sed 's/,//g' | sed 's%/%%g' | sed 's/"//g'
-	done
+    for ID in $(docker ps | awk '{print $1}' | grep -v 'CONTAINER'); do
+        docker inspect $ID | grep Name | head -1 | awk '{print $2}' | sed 's/,//g' | sed 's%/%%g' | sed 's/"//g'
+    done
 }
 
 function dip-fn {
     echo "IP addresses of all named running containers"
 
-    for DOC in `dnames-fn`
-    do
-        IP=`docker inspect $DOC | grep -m3 IPAddress | cut -d '"' -f 4 | tr -d "\n"`
+    for DOC in $(dnames-fn); do
+        IP=$(docker inspect $DOC | grep -m3 IPAddress | cut -d '"' -f 4 | tr -d "\n")
         OUT+=$DOC'\t'$IP'\n'
     done
-    echo $OUT|column -t
+    echo $OUT | column -t
 }
 
 function dex-fn {
-	docker exec -it $1 ${2:-bash}
+    docker exec -it $1 ${2:-bash}
 }
 
 function di-fn {
-	docker inspect $1
+    docker inspect $1
 }
 
 function dl-fn {
-	docker logs -f $1
+    docker logs -f $1
 }
 
 function drun-fn {
-	docker run -it $1 $2
+    docker run -it $1 $2
 }
 
 function dcr-fn {
-	docker-compose run $@
+    docker-compose run $@
 }
 
 function dsr-fn {
-	docker stop $1;docker rm $1
+    docker stop $1
+    docker rm $1
 }
 
 function drmc-fn {
-       docker rm $(docker ps --all -q -f status=exited)
+    docker rm $(docker ps --all -q -f status=exited)
 }
 
 function drmid-fn {
-       imgs=$(docker images -q -f dangling=true)
-       [ ! -z "$imgs" ] && docker rmi "$imgs" || echo "no dangling images."
+    imgs=$(docker images -q -f dangling=true)
+    [ ! -z "$imgs" ] && docker rmi "$imgs" || echo "no dangling images."
 }
 
 # in order to do things like dex $(dlab label) sh
 function dlab {
-       docker ps --filter="label=$1" --format="{{.ID}}"
+    docker ps --filter="label=$1" --format="{{.ID}}"
 }
 
 function dc-fn {
-        docker-compose $*
+    docker-compose $*
 }
 
 function d-aws-cli-fn {
     docker run \
-           -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-           -e AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION \
-           -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
-           amazon/aws-cli:latest $1 $2 $3
+        -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+        -e AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION \
+        -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+        amazon/aws-cli:latest $1 $2 $3
 }
 
 alias daws=d-aws-cli-fn
