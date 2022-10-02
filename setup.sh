@@ -58,24 +58,25 @@ main() {
   ask_for_sudo
 
   # Make sure gum is installed
-  if [ "$os" == "MinGw" ]; then
-    print_in_blue "\tInstalling gum\n"
-    start microsoft-edge:https://github.com/charmbracelet/gum/releases/download/v0.6.0/gum_0.6.0_Windows_x86_64.zip
-    echo "Waiting for you to install gum manually"
-    echo "Press any key if complete..."
-    read -n 1 -s
+  if ! cmd_exists "gum"; then
+    if [ "$os" == "MinGw" ]; then
+      print_in_blue "\tInstalling gum\n"
+      start microsoft-edge:https://github.com/charmbracelet/gum/releases/download/v0.6.0/gum_0.6.0_Windows_x86_64.zip
+      echo "Waiting for you to install gum manually"
+      echo "Press any key if complete..."
+      read -n 1 -s
 
-  elif [ "$os" == "Linux" ]; then
-    if [ "$distro" == "Ubuntu" ]; then
-      echo 'deb [trusted=yes] https://repo.charm.sh/apt/ /' | sudo tee /etc/apt/sources.list.d/charm.list && sudo apt update && sudo apt install gum
-    elif [ "$os" == "ManjaroLinux" ]; then
-      pacman -S gum
+    elif [ "$os" == "Linux" ]; then
+      if [ "$distro" == "Ubuntu" ] || [ "$distro" == "Pop" ]; then
+        echo 'deb [trusted=yes] https://repo.charm.sh/apt/ /' | sudo tee /etc/apt/sources.list.d/charm.list && sudo apt update && sudo apt install gum
+      elif [ "$os" == "ManjaroLinux" ]; then
+        pacman -S gum
+      fi
     fi
   fi
 
   # update dotbot
   gum spin --spinner dot --title "Updating dotbot" -- git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive && git submodule update --init --recursive "${DOTBOT_DIR}"
-  gum confirm "Create directories?" && bash ./src/preferences/create_directories.sh
 
   print_in_purple "\n • Starting dotbot...\n\n"
   # start dotbot actions
@@ -87,6 +88,8 @@ main() {
     skipQuestions=true
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  print_in_purple "\n • Pre setup for install scripts\n\n"
+  gum confirm "Create directories?" && bash ./src/preferences/create_directories.sh
 
   print_in_purple "\n • Looking for install scripts\n\n"
 

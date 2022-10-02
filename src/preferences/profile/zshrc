@@ -5,7 +5,7 @@
 export ZSH="/home/andreas/.oh-my-zsh"
 
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="spaceship"
+ZSH_THEME="agnoster"
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -77,8 +77,8 @@ fi
 
 # wsl 2 display
 # https://shouv.medium.com/how-to-run-cypress-on-wsl2-989b83795fb6
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
-sudo /etc/init.d/dbus start &> /dev/null
+#export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
+#sudo /etc/init.d/dbus start &> /dev/null
 
 
 # starship
