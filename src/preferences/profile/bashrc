@@ -1,14 +1,16 @@
 if [ -f ~/.aliases ]; then
-. ~/.aliases
+  . ~/.aliases
 fi
 
 if [ -f ~/.ssh_gpg_agent ]; then
-. ~/.ssh_gpg_agent
+  . ~/.ssh_gpg_agent
 fi
 
 eval "$(starship init bash)"
 . "$HOME/.cargo/env"
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+
+export GPG_TTY=$(tty)
