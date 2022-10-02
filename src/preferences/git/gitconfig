@@ -1,7 +1,6 @@
 [user]
     name=Andreas Roither
     email=andi.roither@protonmail.com
-	signingkey = 6F6D0BEF430A095A
 [alias]
     rso = remote show origin
     me = config user.name
@@ -124,6 +123,6 @@
     # annotated tags when pushing branches out.
     followTags = true
 [format]
-	pretty = %C(green)%h%C(red)%d %C(yellow)%ar %C(white)%s %C(blue)(%an)
+    pretty = %C(green)%h%C(red)%d %C(yellow)%ar %C(white)%s %C(blue)(%an)
 [gc]
-	auto = 256
+    auto = 256
