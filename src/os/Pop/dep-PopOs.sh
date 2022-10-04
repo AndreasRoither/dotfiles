@@ -22,7 +22,15 @@ package_is_installed() {
     dpkg -s "$1" &>/dev/null
 }
 
-install_package "Utility" "zsh curl shellcheck xclip fzf tilda steam lutris python3-pip snapd"
+# obs studio
+sudo add-apt-repository ppa:obsproject/obs-studio
+# kdenlive
+sudo add-apt-repository ppa:kdenlive/kdenlive-stable
+# syncthing
+sudo curl -o /usr/share/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
+
+install_package "Utility" "zsh curl shellcheck xclip fzf tilda steam lutris python3-pip snapd obs-studio vlc krita kdenlive gnome-tweaks ubuntu-restricted-extras"
 pip3 install protonup
 flatpak install flathub com.usebottles.bottles
 sudo snap install authy

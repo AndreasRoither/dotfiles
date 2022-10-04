@@ -38,8 +38,9 @@ if ! id -u "andreas" >/dev/null 2>&1; then
     fi
 fi
 
-if gum confirm "Add user to docker?"; then
+if gum confirm "Usermod docker,nordvpn?"; then
     sudo usermod -aG docker $USER
+    sudo usermod -aG nordvpn $USER
 fi
 
 if gum confirm "Setup gpg?"; then
