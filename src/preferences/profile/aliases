@@ -69,9 +69,7 @@ alias gaa='git add .'
 alias gaaa='git add --all'
 alias gau='git add --update'
 alias gb='git branch'
-alias gbd=g'git branch | cut -c 3- | gum choose --no-limit | xargs git branch -D'
 alias gc='git commit'
-alias gcg='git commit -m "$(gum input)" -m "$(gum write)"'
 alias gcm='git commit --message'
 alias gcf='git commit --fixup'
 alias gco='git checkout'
@@ -79,7 +77,6 @@ alias gcob='git checkout -b'
 alias gcom='git checkout main'
 alias gcos='git checkout staging'
 alias gcod='git checkout develop'
-alias gprc='gh pr list | cut -f1,2 | gum choose | cut -f1 | xargs gh pr checkout'
 alias gd='git diff'
 alias gda='git diff HEAD'
 alias gi='git init'
@@ -99,12 +96,33 @@ alias gstd='git stash drop'
 alias gstl='git stash list'
 alias gstp='git stash pop'
 alias gsts='git stash save'
+# gum extras
+alias ggr='git status --short | cut -c 4- | gum choose | xargs git restore --staged'
+alias gcg='git commit -m "$(gum input)" -m "$(gum write)"'
+alias gbd=g'git branch | cut -c 3- | gum choose --no-limit | xargs git branch -D'
+alias gprc='gh pr list | cut -f1,2 | gum choose | cut -f1 | xargs gh pr checkout --track'
+alias gcr='git branch -a | cut -c 3- | gum choose | cut -f1 | xargs git checkout --track'
 
 # ----------------------
 # Git Functions
 # ----------------------
 # Git log find by commit message
+unalias glf
 function glf() { git log --all --grep="$1"; }
+
+unalias gcor
+function gcor() {
+    if [ -n "$1" ]; then
+        if git show-ref -q --heads $1; then
+            gco $1
+        else
+            gfo $1
+            gco -t origin/$1
+        fi
+    else
+        echo "Unspecified branch name"
+    fi
+}
 
 ############################################################################
 #                                                                          #

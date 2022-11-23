@@ -99,6 +99,9 @@ main() {
 
   elif [ "$os" == "Linux" ]; then
 
+    # auto fix dual boot time sync
+    timedatectl set-local-rtc 1
+
     if [ ! -d "src/os/${distro}" ]; then
       print_error "Could not find installation files for '${distro}'."
       exit 1
