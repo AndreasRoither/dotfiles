@@ -3,6 +3,7 @@ winget install -e --id Mozilla.Firefox
 winget install -e --id KeePassXCTeam.KeePassXC
 winget install -e --id Twilio.Authy
 winget install -e --id Microsoft.PowerToys
+winget install -e --id nilesoft.shell
 
 # Developer
 winget install -e --id Microsoft.VisualStudioCode
