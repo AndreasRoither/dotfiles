@@ -1,0 +1,115 @@
+#!/bin/bash
+# Interactive package installer for Arch Linux
+# Re-runs when packages.yaml changes (chezmoi tracks the hash below)
+#
+# packages.yaml hash: {{ include ".chezmoidata/packages.yaml" | sha256sum }}
+
+{{- if ne .chezmoi.os "linux" }}
+exit 0
+{{- end }}
+
+set -euo pipefail
+
+if ! command -v pacman &>/dev/null; then
+    echo "Not an Arch-based system, skipping package installation"
+    exit 0
+fi
+
+echo ""
+echo "=============================="
+echo "  Package Group Installer"
+echo "=============================="
+echo ""
+echo "Select package groups to install:"
+echo ""
+echo "  1) Core    - base-devel, git, zsh, starship, fzf, zoxide, bat, ripgrep, fd, etc."
+echo "  2) Dev     - go, rustup, docker, github-cli, just, go-task, k6, postgresql, etc."
+echo "  3) Desktop - firefox, thunderbird, obs-studio, keepassxc, vscode, obsidian, chrome, etc."
+echo "  4) Gaming  - lutris, gamemode, steam, mangohud, bottles, steamtinkerlaunch, etc."
+echo "  5) All     - install everything"
+echo "  0) Skip    - don't install any packages"
+echo ""
+
+read -rp "Enter choices (comma-separated, e.g. 1,2): " choices
+
+if [[ -z "$choices" || "$choices" == "0" ]]; then
+    echo "Skipping package installation."
+    exit 0
+fi
+
+install_core=false
+install_dev=false
+install_desktop=false
+install_gaming=false
+
+IFS=',' read -ra selected <<< "$choices"
+for choice in "${selected[@]}"; do
+    choice=$(echo "$choice" | tr -d ' ')
+    case "$choice" in
+        1) install_core=true ;;
+        2) install_dev=true ;;
+        3) install_desktop=true ;;
+        4) install_gaming=true ;;
+        5) install_core=true; install_dev=true; install_desktop=true; install_gaming=true ;;
+        *) echo "Unknown option: $choice" ;;
+    esac
+done
+
+install_pacman() {
+    local packages=("$@")
+    if [[ ${#packages[@]} -gt 0 ]]; then
+        echo "==> Installing official packages: ${packages[*]}"
+        sudo pacman -S --needed --noconfirm "${packages[@]}"
+    fi
+}
+
+install_aur() {
+    local packages=("$@")
+    if [[ ${#packages[@]} -gt 0 ]]; then
+        if command -v paru &>/dev/null; then
+            echo "==> Installing AUR packages: ${packages[*]}"
+            paru -S --needed --noconfirm "${packages[@]}"
+        else
+            echo "WARNING: paru not found, skipping AUR packages: ${packages[*]}"
+        fi
+    fi
+}
+
+if $install_core; then
+    echo ""
+    echo "--- Core packages ---"
+    install_pacman {{ .packages.core.pacman | join " " }}
+{{- if .packages.core.aur }}
+    install_aur {{ .packages.core.aur | join " " }}
+{{- end }}
+fi
+
+if $install_dev; then
+    echo ""
+    echo "--- Dev packages ---"
+    install_pacman {{ .packages.dev.pacman | join " " }}
+{{- if .packages.dev.aur }}
+    install_aur {{ .packages.dev.aur | join " " }}
+{{- end }}
+fi
+
+if $install_desktop; then
+    echo ""
+    echo "--- Desktop packages ---"
+    install_pacman {{ .packages.desktop.pacman | join " " }}
+{{- if .packages.desktop.aur }}
+    install_aur {{ .packages.desktop.aur | join " " }}
+{{- end }}
+fi
+
+if $install_gaming; then
+    echo ""
+    echo "--- Gaming packages ---"
+    install_pacman {{ .packages.gaming.pacman | join " " }}
+{{- if .packages.gaming.aur }}
+    install_aur {{ .packages.gaming.aur | join " " }}
+{{- end }}
+fi
+
+echo ""
+echo "==> Package installation complete!"

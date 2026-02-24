@@ -1,0 +1,345 @@
+# ----------------------
+# General
+# ----------------------
+# Alias's for multiple directory listing commands
+alias lt='ls --human-readable --size -1 -S --classify'
+alias la='ls -Alh' # show hidden files
+alias ls='ls -aFh --color=always' # add colors and file type extensions
+alias lx='ls -lXBh' # sort by extension
+alias lk='ls -lSrh' # sort by size
+alias lc='ls -lcrh' # sort by change time
+alias lu='ls -lurh' # sort by access time
+alias lr='ls -lRh' # recursive ls
+alias lm='ls -alh |more' # pipe through 'more'
+alias lw='ls -xAh' # wide listing format
+alias ll='ls -Fls' # long listing format
+alias labc='ls -lap' #alphabetical sort
+alias lf="ls -l | egrep -v '^d'" # files only
+alias ldir="ls -l | egrep '^d'" # directories only
+
+# Search command line history
+alias h="history | grep "
+
+# Search running processes
+#alias p="ps aux | grep "
+alias topcpu="/bin/ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10"
+
+# Show open ports
+alias openports='netstat -nape --inet'
+
+# Alias's for safe and forced reboots
+alias rebootsafe='sudo shutdown -r now'
+alias rebootforce='sudo shutdown -r -n now'
+
+# Alias's to show disk space and space used in a folder
+alias diskspace="du -S | sort -n -r |more"
+alias folders='du -h --max-depth=1'
+alias folderssort='find . -maxdepth 1 -type d -print0 | xargs -0 du -sk | sort -rn'
+alias tree='tree -CAhF --dirsfirst'
+alias treed='tree -CAFd'
+alias mountedinfo='df -hT'
+
+# Extracts any archive(s) (if unp isn't installed)
+extract () {
+    for archive in "$@"; do
+        if [ -f "$archive" ] ; then
+            case $archive in
+                *.tar.bz2)   tar xvjf $archive    ;;
+                *.tar.gz)    tar xvzf $archive    ;;
+                *.bz2)       bunzip2 $archive     ;;
+                *.rar)       rar x $archive       ;;
+                *.gz)        gunzip $archive      ;;
+                *.tar)       tar xvf $archive     ;;
+                *.tbz2)      tar xvjf $archive    ;;
+                *.tgz)       tar xvzf $archive    ;;
+                *.zip)       unzip $archive       ;;
+                *.Z)         uncompress $archive  ;;
+                *.7z)        7z x $archive        ;;
+                *)           echo "don't know how to extract '$archive'..." ;;
+            esac
+        else
+            echo "'$archive' is not a valid file!"
+        fi
+    done
+}
+
+# ----------------------
+# Navigation
+# ----------------------
+
+## get rid of command not found ##
+alias cd..='cd ..'
+
+## a quick way to get out of current directory ##
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
+alias .2='cd ../../'
+alias .4='cd ../../../../'
+alias .5='cd ../../../../..'
+
+# ----------------------
+# package manager
+# ----------------------
+alias p="pnpm"
+alias pi="pnpm i"
+alias pu="pnpm upgrade"
+
+# ----------------------
+# Golang
+# ----------------------
+alias task='go-task'
+alias gob="go build"
+alias got="go test ./..."
+alias gotv="go test -v ./..."
+alias gor="go run"
+alias gom="go mod tidy"
+alias gomt="go mod tidy && go mod verify"
+alias gol="golangci-lint run"
+alias gocover="go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out"
+
+# ----------------------
+# PostgreSQL
+# ----------------------
+alias pgstart="sudo systemctl start postgresql"
+alias pgstop="sudo systemctl stop postgresql"
+alias pgstatus="sudo systemctl status postgresql"
+alias psqlc="psql -U postgres"
+
+# ----------------------
+# Docker Compose v2
+# ----------------------
+alias dco="docker compose"
+alias dcup="docker compose up -d"
+alias dcdown="docker compose down"
+alias dcps="docker compose ps"
+alias dclogs="docker compose logs -f"
+alias dcbuild="docker compose build"
+alias dcrestart="docker compose restart"
+alias dcexec="docker compose exec"
+
+# ----------------------
+# Useful Dev Shortcuts
+# ----------------------
+alias ports="ss -tulpn"
+alias path='echo $PATH | tr ":" "\n"'
+alias zshrc='${EDITOR:-vim} ~/.zshrc'
+alias aliases='${EDITOR:-vim} ~/.aliases'
+alias reload='source ~/.zshrc'
+
+# ----------------------
+# Other
+# ----------------------
+alias left='ls -t -1'
+alias cpv='rsync -ah --info=progress2'
+alias untar='tar -zxvf '
+alias wget='wget -c '
+alias ipe='curl ipinfo.io/ip'
+alias svenv='source venv/bin/activate'
+alias sdea='deactivate'
+alias mv="mv -i"
+alias cp="cp -i"
+alias cls='clear'
+alias resource="pkill gpg-agent && pkill ssh-agent && source ~/.zshrc"
+alias hw='hwinfo --short'
+
+# Get the error messages from journalctl
+alias jctl="journalctl -p 3 -xb"
+
+# ----------------------
+# Arch
+# ----------------------
+alias cmirror="sudo cachyos-rate-mirrors"
+alias update='sudo pacman -Syu'
+alias update-yay='yay -Syu --aur'
+alias update-paru='paru -Syu'
+alias big="expac -H M '%m\t%n' | sort -h | nl"              # Sort installed packages according to size in MB
+alias gitpkg='pacman -Q | grep -i "\-git" | wc -l'          # List amount of -git packages
+
+# Cleanup orphaned packages
+alias cleanup='sudo pacman -Rns (pacman -Qtdq)'
+
+# Recent installed packages
+alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+
+# ----------------------
+# Git Aliases
+# ----------------------
+alias startgit='cd `git rev-parse --show-toplevel` && git checkout main && git pull'
+alias cg='cd `git rev-parse --show-toplevel`'
+
+alias ga='git add'
+alias gaa='git add .'
+alias gaaa='git add --all'
+alias gau='git add --update'
+alias gb='git branch'
+alias gc='git commit'
+alias gcm='git commit --message'
+alias gcf='git commit --fixup'
+alias gco='git checkout'
+alias gcob='git checkout -b'
+alias gcom='git checkout main'
+alias gcos='git checkout staging'
+alias gcod='git checkout develop'
+alias gd='git diff'
+alias gda='git diff HEAD'
+alias gi='git init'
+alias glg='git log --graph --oneline --decorate --all'
+alias gld='git log --pretty=format:"%C(auto)%h %C(cyan)%ad %C(yellow)%an%C(reset) %s" --date=short --all -n 10'
+alias gm='git merge --no-ff'
+alias gma='git merge --abort'
+alias gmc='git merge --continue'
+alias gp='git pull'
+alias gpr='git pull --rebase'
+alias gr='git rebase'
+alias gs='git status'
+alias gss='git status --short'
+alias gst='git stash'
+alias gsta='git stash apply'
+alias gstd='git stash drop'
+alias gstl='git stash list'
+alias gstp='git stash pop'
+alias gsts='git stash save'
+
+
+# ----------------------
+# Git Functions
+# ----------------------
+
+# Git log find by commit message
+function glf() { git log --all --grep="$1"; }
+
+# Git checkout locally if local available otherwise use latest from remote
+function gcor() {
+    if [ -n "$1" ]; then
+        if git show-ref -q --heads "$1"; then
+            gco "$1"
+        else
+            gfo "$1"
+            gco -t "origin/$1"
+        fi
+    else
+        echo "Unspecified branch name"
+    fi
+}
+
+# ----------------------
+# Docker
+# ----------------------
+alias dps="docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'"
+alias dpsa="docker ps -a --format 'table {{.Names}}\t{{.State}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}'"
+alias di="docker images"
+alias drm="docker rm"
+alias drmi="docker rmi"
+alias dstop="docker stop"
+alias dstart="docker start"
+alias dlogs="docker logs -f"
+alias dprune="docker system prune -af"
+alias dvprune="docker volume prune -f"
+alias diprune="docker image prune -af"
+alias dstats="docker stats --format 'table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}'"
+alias dip="docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}'"
+
+# ----------------------
+# Docker Compose v2 (expanded)
+# ----------------------
+alias dcupb="docker compose up -d --build"
+alias dcstop="docker compose stop"
+alias dcrm="docker compose rm -f"
+alias dcpull="docker compose pull"
+alias dctop="docker compose top"
+alias dcconfig="docker compose config"
+alias dcrun="docker compose run --rm"
+
+# ----------------------
+# Docker Functions
+# ----------------------
+
+# Execute bash/sh in a running container
+dsh() {
+    docker exec -it "$1" sh -c "if command -v bash > /dev/null; then bash; else sh; fi"
+}
+
+# Stop all running containers
+dstopall() {
+    docker stop $(docker ps -q) 2>/dev/null || echo "No running containers"
+}
+
+# Remove all stopped containers
+drmall() {
+    docker rm $(docker ps -aq) 2>/dev/null || echo "No containers to remove"
+}
+
+# Remove all images
+drmiall() {
+    docker rmi $(docker images -q) 2>/dev/null || echo "No images to remove"
+}
+
+# Show container logs with timestamps
+dlogst() {
+    docker logs -f --timestamps "$1"
+}
+
+# Inspect container environment variables
+denv() {
+    docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' "$1"
+}
+
+# Get container resource usage
+duse() {
+    docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.PIDs}}"
+}
+
+# Follow logs for a compose service
+dclogsf() {
+    docker compose logs -f "$1"
+}
+
+# Restart a specific compose service
+dcrs() {
+    docker compose restart "$1"
+}
+
+# Rebuild and restart a specific service
+dcrebuild() {
+    docker compose up -d --build --no-deps "$1"
+}
+
+# Shell into a compose service
+dcsh() {
+    docker compose exec "$1" sh -c "if command -v bash > /dev/null; then bash; else sh; fi"
+}
+
+# Show container ports
+dports() {
+    docker ps --format "table {{.Names}}\t{{.Ports}}"
+}
+
+# Clean up everything (containers, images, volumes, networks)
+dnuke() {
+    echo "This will remove all containers, images, volumes, and networks. Continue? (y/N)"
+    read -r response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+        docker stop $(docker ps -q) 2>/dev/null
+        docker system prune -af --volumes
+        echo "Docker cleaned!"
+    fi
+}
+
+# Tail last N lines of container logs (default 100)
+dtail() {
+    local lines=${2:-100}
+    docker logs --tail "$lines" -f "$1"
+}
+
+# Copy file from container
+dcp() {
+    docker cp "$1:$2" "$3"
+}
+
+# Show docker disk usage
+ddf() {
+    docker system df -v
+}

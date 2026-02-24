@@ -1,0 +1,6 @@
+[data]
+    name = "{{ promptStringOnce . "name" "Your full name" }}"
+    email = "{{ promptStringOnce . "email" "Your email" }}"
+    signingkey = "{{ promptStringOnce . "signingkey" "SSH signing key path" }}"
+    hostname = "{{ promptStringOnce . "hostname" "Machine hostname" }}"
+    editor = "{{ promptStringOnce . "editor" "Editor command (e.g. code --wait)" }}"

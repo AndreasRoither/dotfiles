@@ -1,0 +1,46 @@
+#!/bin/bash
+# Generate an SSH ed25519 key pair
+
+set -euo pipefail
+
+SSH_DIR="$HOME/.ssh"
+mkdir -p "$SSH_DIR"
+chmod 700 "$SSH_DIR"
+
+read -rp "Email for key comment []: " email
+read -rp "Key filename [id_ed25519]: " filename
+filename="${filename:-id_ed25519}"
+
+key_path="$SSH_DIR/$filename"
+
+if [[ -f "$key_path" ]]; then
+    echo "Key already exists: $key_path"
+    read -rp "Overwrite? [y/N]: " overwrite
+    if [[ ! "$overwrite" =~ ^[Yy]$ ]]; then
+        echo "Aborted."
+        exit 0
+    fi
+fi
+
+ssh_args=(-t ed25519 -f "$key_path")
+if [[ -n "$email" ]]; then
+    ssh_args+=(-C "$email")
+fi
+
+ssh-keygen "${ssh_args[@]}"
+
+chmod 600 "$key_path"
+chmod 644 "$key_path.pub"
+
+echo ""
+echo "==> Key generated: $key_path"
+
+read -rp "Add key to ssh-agent? [Y/n]: " add_agent
+if [[ ! "$add_agent" =~ ^[Nn]$ ]]; then
+    eval "$(ssh-agent -s)" 2>/dev/null || true
+    ssh-add "$key_path"
+fi
+
+echo ""
+echo "==> Public key:"
+cat "$key_path.pub"

@@ -1,0 +1,477 @@
+[user]
+	name = {{ .name }}
+	email = {{ .email }}
+	signingkey = {{ .signingkey }}
+
+[commit]
+	gpgsign = true
+
+[gpg]
+	format = ssh
+
+[core]
+	excludesFile = ~/.gitignore_global
+    autocrlf = input
+    compression = 9     # cpu tradeoff for network
+	preloadindex = true # faster status
+	fsmonitor = true    # increase speed for large worktrees
+	longpaths = true
+	precomposeunicode = true # use multiple cores for checkout/status
+	editor = {{ .editor }}
+
+# Modern Git maintenance (replaces git gc)
+[maintenance]
+	repo = true
+	strategy = incremental
+
+# Automatic conflict resolution for common patterns
+[rerere]
+	enabled = true
+	autoUpdate = true
+
+# Enhanced security settings
+[protocol]
+	version = 2
+
+[url "https://github.com/"]
+	insteadOf = git://github.com/
+
+# Prevent data corruption
+[core]
+	trustctime = false
+
+[init]
+    defaultBranch = main
+
+[blame]
+    coloring = highlightRecent
+    date = relative
+
+[log]
+    abbrevCommit = true  # short commits
+    graphColors = blue,yellow,cyan,magenta,green,red
+
+[push]
+    autoSetupRemote = true  # auto push to origin
+    default = current   # only push current branch to origin
+    # Make `git push` automatically push relevant
+    # annotated tags when pushing branches out.
+    followTags = true
+
+[pull]
+    default = current
+    rebase = true       # Safer default: rebase instead of merge for pulls
+    autoStash = true    # Automatically stash and pop if working directory is dirty
+
+[rebase]
+    autoSquash = true   # Automatically move commits to new base
+    autoStash = true    # Automatically stash changes before rebasing
+    updateRefs = true   # Update refs to make rebase safer
+
+[pack]
+    threads = 0         # all available threads
+    windowMemory = 1g   # 1G memory for packing
+    packSizeLimit = 1g  # 1G of pack size
+    deltaCacheSize = 512m # Improve delta compression
+    window = 250        # Better pack window
+
+# Integrity checks: https://git-scm.com/docs/git-fsck
+[transfer]
+    fsckObjects = true
+[receive]
+    fsckObjects = true
+[fetch]
+    fsckObjects = true
+
+[branch]
+    sort = -committerdate
+    autosetupmerge = always     # Automatically setup tracking branches
+    autosetuprebase = always    # Setup rebase for new branches
+
+[tag]
+    sort = -taggerdate
+
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+    highlightRecent = black bold,1 year ago,white,1 month ago,default,7 days ago,blue
+
+[color "branch"]
+    current  = magenta
+    local    = default
+    remote   = yellow
+    upstream = green
+    plain    = blue
+
+[color "diff"]
+    meta       = black bold
+    frag       = magenta
+    context    = white
+    whitespace = yellow reverse
+    old        = red
+
+[color "status"]
+    added = green
+    changed = blue
+    untracked = red
+
+[grep]
+	lineNumber = true
+
+[merge]
+    tool = vscode
+    conflictStyle = zdiff3  # Better conflict resolution
+    autoStash = true        # Automatically resolve trivial merges
+
+[mergetool]
+    keepBackup = false      # Clean up backup files created by merge tools on tool exit
+    keepTemporaries = false # Clean up temp files created by merge tools on tool exit
+    writeToTemp = true      # Put the temp files in a dedicated dir anyway
+    prompt = false          # Auto-accept file prompts when launching merge tools
+
+[mergetool]
+	keepBackup = false
+
+[mergetool "vscode"]
+    cmd = code --wait $MERGED
+
+[diff]
+    tool = vscode
+    algorithm = histogram                   # Better algorithm for diffs
+    renames = copies                        # Show renames and copies
+    mnemonicPrefix = true                   # Use prefix for better context
+    wordRegex = [[:alnum:]]+|[^[:space:]]   # Show word-level changes
+    conflictStyle = zdiff3                  # Better conflict markers
+
+[difftool]
+    prompt = false
+    trustExitCode = true
+
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+
+[pretty]
+    custom = "%C(bold blue)%h%C(reset) %C(bold magenta)%d%C(reset) %C(blue)%ar%C(reset) %C(bold white)%s%C(reset) %C(green)(%an)%C(reset)"
+    #                     │                    │                      │                        │                        └─ author name
+    #                     │                    │                      │                        └─ message
+    #                     │                    │                      └─ date (relative)
+    #                     │                    └─ decorations (branch, heads or tags)
+    #                    └─ hash (abbreviated)
+
+[format]
+    pretty = %C(bold blue)%h%C(reset) %C(bold magenta)%d%C(reset) %C(blue)%ar%C(reset) %C(bold white)%s%C(reset) %C(green)(%an)%C(reset)
+
+[gc]
+    auto = 256
+
+[column]
+	ui = auto
+	sort = -committerdate
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[alias]
+    # Modern workflow aliases
+    sw = switch
+    swc = switch -c # create and switch
+    swd = switch -d # delete branch
+    restore = restore
+    unstage = restore --staged
+
+    # Enhanced status and staging
+    ss = status --short --branch
+    staged = diff --cached
+    unstaged = diff
+
+    # Modern commit workflows
+    amend = commit --amend --no-edit # amend last commit without changing message
+    fixup = commit --fixup           # fixup commit
+    squash = commit --squash         # squash commit to previous commit
+
+    # Clean up workflows
+    gone = "!f() { git fetch --all --prune; git branch -vv | awk '/: gone]/{print $1}' | xargs -r git branch -D; }; f" # delete branches that are gone on remote
+    cleanup = "!git remote prune origin && git gc && git clean -df && git stash clear" # clean up local repository by removing untracked files, pruning remote branches, and running garbage collection
+
+    # Enhanced log aliases
+    recent = log --oneline --graph -10
+    today = log --oneline --since='1 day ago'
+    week = log --oneline --since='1 week ago'
+    authors = shortlog -sn --no-merges
+
+    # File operations
+    conflicts = diff --name-only --diff-filter=U
+    modified = ls-files -m
+    added = ls-files --others --exclude-standard
+
+    # Repository analysis
+    size = count-objects -vH
+    aliases = "!git config --get-regexp '^alias\\.' | sed 's/alias\\.//' | sort"
+
+    rso = remote show origin
+    me = config user.name
+    a = add
+    aa = add .
+    aaa = add --all
+    au = add --update
+    b = branch
+    bd = branch --delete
+    c = commit
+    cm = commit --message
+    cf = commit --fixup
+    # Last tag in the current branch
+    last-tag = describe --tags --abbrev=0
+
+    # checkout
+    co = checkout
+    cob = checkout -b
+    com = checkout master
+    cos = checkout staging
+    cod = checkout develop
+    d = diff
+    da = diff HEAD
+    i = init
+
+    # log aliases
+    ls = log --pretty=format:'%C(bold blue)%h%C(reset) %C(bold magenta)%d%C(reset) %C(bold white)%s%C(reset) %C(green)- [%cn]%C(reset)' --decorate
+    ll = log --pretty=format:'%C(bold blue)%h%C(reset) %C(bold magenta)%d%C(reset) %C(bold white)%s%C(reset) %C(green)- [%cn]%C(reset)' --decorate --numstat
+    lg = log --graph --oneline --decorate --all
+    graph = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(blue)(%ar)%C(reset) %C(bold white)%s%C(reset) %C(green)- %an%C(reset) %C(bold yellow)%d%C(reset)' --all
+    what-changed = log --stat --summary
+    tree = log --graph --pretty=format:'%C(bold blue)%h%C(reset) %C(bold yellow)%d%C(reset) %C(bold white)%s%C(reset) %C(blue)(%cr)%C(reset) %C(green)<%an>%C(reset)' --abbrev-commit
+    l1 = log --oneline
+    l10 = log --oneline -10
+    l20 = log --oneline -20
+    lp = log --patch
+
+    # merge
+    m = merge --no-ff
+    ma = merge --abort
+    mc = merge --continue
+
+    # pull / rebase
+    p = pull
+    pr = pull --rebase
+    r = rebase
+    ir = rebase -i HEAD~
+    pushf = push --force-with-lease --force-if-includes
+
+    # status
+    s = status
+    ss = status --short
+    stat = show --stat --oneline
+
+    # stash
+    st = stash
+    sta = stash apply
+    std = stash drop
+    stl = stash list
+    stp = stash pop
+    sts = stash save
+
+    # Given any git object, try to show it briefly
+    whatis = show --no-patch --pretty='tformat:%C(bold blue)%h%C(reset) %C(bold white)%s%C(reset), %C(blue)%ad%C(reset) %C(green)[%cn]%C(reset)' --decorate --date=short
+    # Show who contributed, in descending order by number of commits
+    who = shortlog --summary --numbered --no-merges
+
+    ### diff-* aliases ###
+    diff-all = "!for name in $(git diff --name-only \"$1\"); do git difftool \"$1\" \"$name\" & done"
+    diff-changes = diff --name-status -r
+    diff-stat = diff --stat --ignore-space-change -r
+    diff-staged = diff --cached
+
+    # find top level of current repo
+    top = !git rev-parse --show-toplevel
+
+    # Get the current branch name (not so useful in itself, but used in
+    # other aliases)
+    branch-name = "!git rev-parse --abbrev-ref HEAD"
+
+    # Push the current branch to the remote "origin", and set it to track
+    # the upstream branch
+    publish = "!git push -u origin $(git branch-name)"
+
+    # Unpublish the current branch by deleting the
+    # remote version of the current branch.
+    unpublish = "!git push origin :\"$(git current-branch)\""
+
+    # Show incoming changes with upstream.
+    inbound = !git remote update --prune; git log ..@{upstream}
+
+    # Show outgoing changes with upstream.
+    outbound = log @{upstream}..
+
+    ### Shell scripting aliases ###
+
+    # Show the top level directory name
+    top = rev-parse --show-toplevel
+
+    # Show the default branch name
+    default-branch = config init.defaultBranch
+
+    # Show the current branch name
+    # Newer versions of git can do: git branch --show-current
+    current-branch = rev-parse --abbrev-ref HEAD
+
+    # Show the upstream branch name
+    upstream-branch = "!git for-each-ref --format='%(upstream:short)' \"$(git symbolic-ref -q HEAD)\""
+    # Another, shorter and simpler, way
+    upb = rev-parse --abbrev-ref "@{upstream}"
+
+    summary = "!f() { \
+        printf \"Summary of this branch...\n\"; \
+        printf \"%s\n\" $(git rev-parse --abbrev-ref HEAD); \
+        printf \"%s first commit timestamp\n\" $(git log --date-order --format=%cI | tail -1); \
+        printf \"%s last commit timestamp\n\" $(git log -1 --date-order --format=%cI); \
+        printf \"\nSummary of counts...\n\"; \
+        printf \"%d commit count\n\" $(git rev-list --count HEAD); \
+        printf \"%d date count\n\" $(git log --format=oneline --format=\"%ad\" --date=format:\"%Y-%m-%d\" | awk '{a[$0]=1}END{for(i in a){n++;} print n}'); \
+        printf \"%d tag count\n\" $(git tag | wc -l); \
+        printf \"%d author count\n\" $(git log --format=oneline --format=\"%aE\" | awk '{a[$0]=1}END{for(i in a){n++;} print n}'); \
+        printf \"%d committer count\n\" $(git log --format=oneline --format=\"%cE\" | awk '{a[$0]=1}END{for(i in a){n++;} print n}'); \
+        printf \"%d local branch count\n\" $(git branch | grep -v \" -> \" | wc -l); \
+        printf \"%d remote branch count\n\" $(git branch -r | grep -v \" -> \" | wc -l); \
+        printf \"\nSummary of this directory...\n\"; \
+        printf \"%s\n\" $(pwd); \
+        printf \"%d file count via git ls-files\n\" $(git ls-files | wc -l); \
+        printf \"%d file count via find command\n\" $(find . | wc -l); \
+        printf \"%d disk usage\n\" $(du -s | awk '{print $1}'); \
+        printf \"\nMost-active authors, with commit count and %%...\n\"; git log-of-count-and-email | head -7; \
+        printf \"\nMost-active dates, with commit count and %%...\n\"; git log-of-count-and-day | head -7; \
+        printf \"\nMost-active files, with churn count\n\"; git churn | head -7; \
+    }; f"
+
+    # Do everything we can to optimize the repository.
+    #
+    # This command takes a long time to run, perhaps even overnight.
+    #
+    # Currently, this command simply calls `git pruner` and `git repacker`,
+    # then one step (that may be unnecessary) calling `git prune-packed`.
+    #
+    optimizer = !git pruner; git repacker; git prune-packed
+
+    # Search for a given string in all patches and print commit messages.
+    #
+    # Example: search for any commit that adds or removes string "foobar"
+    #
+    #     git search-commits foobar
+    #
+    # Example: search commits for string "foobar" in directory src/lib
+    #
+    #     git search-commits foobar src/lib
+    #
+    # Example: search commits for "foobar", print full diff of commit with 1 line context
+    #
+    #     git search-commits foobar --pickaxe-all -U1 src/lib
+    #
+    # Posted by Mikko Rantalainen on StackOverflow.
+    #
+    search-commits = "!f() { query=\"$1\"; shift; git log -S\"$query\" \"$@\"; }; f \"$@\""
+
+    ### log-* aliases ###
+
+    # Show log of new commits after you fetched, with stats, excluding merges
+    log-fresh = log ORIG_HEAD.. --stat --no-merges
+
+    # Show log list with our preferred information, a.k.a. `ll`
+    #
+    #   * Short date format using YYYY-MM-DD (no time, no zone)
+    #   * Short hash commit format using abbreviated hexadecimal (not full hexadecimal)
+    #   * Short author field using name (no email address) and signature mark
+    #   * Short layout without columns
+    #
+    log-list = log --graph --topo-order --date=short --abbrev-commit --decorate --all --boundary --pretty=format:'%C(blue)%ad%C(reset) %C(bold cyan)%h%C(reset) %C(bold magenta)%d%C(reset) %C(bold white)%s%C(reset) %C(green)[%aN]%C(reset) %C(yellow)%G?%C(reset)'
+
+    # Show log  list with our preferred information with long formats, a.k.a. `lll`
+    #
+    #   * Long date format using iso8601 strict YYYY-MM-DDTHH:MM:SS+HH:MM
+    #   * Long hash commit format using full hexadecimal displayed as name-rev
+    #   * Long author field using name and email address and signature mark
+    #   * Long layout with columns
+    #
+    log-list-long = log --graph --topo-order --date=iso8601-strict --no-abbrev-commit --decorate --all --boundary --pretty=format:'%C(blue)%ad%C(reset) %C(bold cyan)%h%C(reset) %C(bold magenta)%d%C(reset) %C(bold white)%s%C(reset) %C(green)[%aN <%aE>]%C(reset) %C(yellow)%G?%C(reset)'
+
+    # Show log for my own commits by my own user email
+    log-my = "!git log --author \"$(git config user.email)\""
+
+    # Show log as a graph
+    log-graph = log --graph --all --oneline --decorate
+
+    # Show the date of the first (a.k.a. earliest) commit, in strict ISO 8601 format
+    log-date-first = "!git log --date-order --format=%cI | tail -1"
+
+    # Show the date of the last (a.k.a. latest) commit, in strict ISO 8601 format
+    log-date-last = log -1 --date-order --format=%cI
+
+    # Show log with the recent hour, day, week, month, year
+    log-1-hour  = log --since=1-hour-ago
+    log-1-day   = log --since=1-day-ago
+    log-1-week  = log --since=1-week-ago
+    log-1-month = log --since=1-month-ago
+    log-1-year  = log --since=1-year-ago
+
+    # Show log with my own recent hour, day, week, month, year
+    log-my-hour  = "!git log --author \"$(git config user.email)\" --since=1-hour-ago"
+    log-my-day   = "!git log --author \"$(git config user.email)\" --since=1-day-ago"
+    log-my-week  = "!git log --author \"$(git config user.email)\" --since=1-week-ago"
+    log-my-month = "!git log --author \"$(git config user.email)\" --since=1-month-ago"
+    log-my-year  = "!git log --author \"$(git config user.email)\" --since=1-year-ago"
+
+    # Show a specific format string and its number of log entries
+    log-of-format-and-count = "!f() { format=\"$1\"; shift; git log \"$@\" --format=oneline --format=\"$format\" | awk '{a[$0]++}END{for(i in a){print i, a[i], int((a[i]/NR)*100) \"%\"}}' | sort; }; f"
+    log-of-count-and-format = "!f() { format=\"$1\"; shift; git log \"$@\" --format=oneline --format=\"$format\" | awk '{a[$0]++}END{for(i in a){print a[i], int((a[i]/NR)*100) \"%\", i}}' | sort -nr; }; f"
+
+    # Show the number of log entries by a specific format string and date format string
+    log-of-format-and-count-with-date = "!f() { format=\"$1\"; shift; date_format=\"$1\"; shift; git log \"$@\" --format=oneline --format=\"$format\" --date=format:\"$date_format\" | awk '{a[$0]++}END{for(i in a){print i, a[i], int((a[i]/NR)*100) \"%\"}}' | sort -r; }; f"
+    log-of-count-and-format-with-date = "!f() { format=\"$1\"; shift; date_format=\"$1\"; shift; git log \"$@\" --format=oneline --format=\"$format\" --date=format:\"$date_format\" | awk '{a[$0]++}END{for(i in a){print a[i], int((a[i]/NR)*100) \"%\", i}}' | sort -nr; }; f"
+
+    # Show the number of log items by email
+    log-of-email-and-count         = "!f() { git log-of-format-and-count \"%aE\" \"$@\"; }; f"
+    log-of-count-and-email         = "!f() { git log-of-count-and-format \"%aE\" \"$@\"; }; f"
+
+    # Show the number of log items by hour
+    log-of-hour-and-count          = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y-%m-%dT%H\" \"$@\" ; }; f"
+    log-of-count-and-hour          = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y-%m-%dT%H\" \"$@\" ; }; f"
+
+    # Show the number of log items by day
+    log-of-day-and-count           = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y-%m-%d\" \"$@\" ; }; f"
+    log-of-count-and-day           = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y-%m-%d\" \"$@\" ; }; f"
+
+    # Show the number of log items by week
+    log-of-week-and-count          = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y#%V\" \"$@\"; }; f"
+    log-of-count-and-week          = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y#%V\" \"$@\"; }; f"
+
+    # Show the number of log items by month
+    log-of-month-and-count         = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y-%m\" \"$@\" ; }; f"
+    log-of-count-and-month         = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y-%m\" \"$@\" ; }; f"
+
+    # Show the number of log items by year
+    log-of-year-and-count          = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y\" \"$@\" ; }; f"
+    log-of-count-and-year          = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y\" \"$@\" ; }; f"
+
+    # Show the number of log items by hour of day
+    log-of-hour-of-day-and-count   = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%H\" \"$@\"; }; f"
+    log-of-count-and-hour-of-day   = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%H\" \"$@\"; }; f"
+
+    # Show the number of log items by day of week
+    log-of-day-of-week-and-count   = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%u\" \"$@\"; }; f"
+    log-of-count-and-day-of-week   = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%u\" \"$@\"; }; f"
+
+    # Show the number of log items by week of year
+    log-of-week-of-year-and-count  = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%V\" \"$@\"; }; f"
+    log-of-count-and-week-of-year  = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%V\" \"$@\"; }; f"
+
+    log-refs = log --all --graph --decorate --oneline --simplify-by-decoration --no-merges
+    log-timeline = log --format='%C(bold blue)%h%C(reset) %C(green)%an%C(reset) %C(blue)%ar%C(reset) - %C(bold white)%s%C(reset)'
+    log-local = log --oneline origin..HEAD
+    log-fetched = log --oneline HEAD..origin/main
+[lfs]
+	concurrenttransfers = 3
+[lfs "customtransfer.xet"]
+	path = git-xet
+	args = transfer
+	concurrent = true

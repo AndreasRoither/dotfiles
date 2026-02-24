@@ -1,0 +1,25 @@
+if [ -f ~/.aliases ]; then
+  . ~/.aliases
+fi
+
+if [ -f ~/start_agents.sh ]; then
+  source ~/start_agents.sh
+fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+
+if [ -f "{{ .chezmoi.homeDir }}/.cargo/env" ]; then
+  . "{{ .chezmoi.homeDir }}/.cargo/env"
+fi
+
+# Don't put duplicate lines in the history and do not add lines that start with a space
+export HISTCONTROL=erasedups:ignoredups:ignorespace
+
+export GPG_TTY=$(tty)
+
+# Install Starship - curl -sS https://starship.rs/install.sh | sh
+#eval "$(starship init bash)"
+
+eval "$(zoxide init bash)"

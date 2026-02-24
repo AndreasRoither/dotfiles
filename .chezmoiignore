@@ -1,0 +1,9 @@
+README.md
+LICENSE
+.github/
+public/
+
+# Ignore alacritty config on headless machines
+{{- if eq .hostname "server" }}
+dot_config/alacritty/
+{{- end }}

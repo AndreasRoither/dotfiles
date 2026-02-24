@@ -1,0 +1,80 @@
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="agnoster"
+
+plugins=(
+    git
+    git-auto-fetch
+    git-prompt
+    gitignore
+    docker
+    docker-compose
+    zsh-autosuggestions
+    zsh-interactive-cd
+    fzf
+    golang
+    ssh
+    gpg-agent
+    rust
+    k9s
+    mvn
+    node
+    thefuck
+    vscode
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# ----------------------
+# general setup
+# ----------------------
+
+# aliases
+if [ -f ~/.aliases ]; then
+    . ~/.aliases
+fi
+
+if [ -f ~/start_agents.sh ]; then
+    source ~/start_agents.sh
+fi
+
+# Load Git completion
+zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
+fpath=(~/.zsh $fpath)
+autoload -Uz compinit && compinit
+
+function list_all() {
+    emulate -L zsh
+    ls
+}
+if [[ ${chpwd_functions[(r)list_all]} != "list_all" ]];then
+    chpwd_functions=(${chpwd_functions[@]} "list_all")
+fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Go
+export PATH="$HOME/go/bin:$PATH"
+
+# CUDA
+export CUDA_HOME=/opt/cuda
+export PATH=$CUDA_HOME/bin:$PATH
+
+# pnpm
+export PNPM_HOME="{{ .chezmoi.homeDir }}/.local/share/pnpm"
+case ":$PATH:" in
+    *":$PNPM_HOME:"*) ;;
+    *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+export PATH="$HOME/.local/bin:$PATH"
+
+fpath=(~/.oh-my-zsh/custom/completions $fpath)
+eval "$(just --completions zsh)"
+
+eval "$(starship init zsh)"
