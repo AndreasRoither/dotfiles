@@ -53,6 +53,8 @@ Scripts run automatically during `chezmoi apply`:
 1. **Bootstrap** (`run_once`) — Installs paru AUR helper if missing
 2. **Packages** (`run_onchange`) — Interactive package group installer, re-runs when `packages.yaml` changes
 3. **Shell setup** (`run_once`) — Installs Oh My Zsh + plugins, sets zsh as default shell
+4. **Node.js setup** (`run_once`) — Installs nvm, Node.js LTS, and pnpm
+5. **Zed** (`run_once`) — Installs Zed editor via official script
 
 ## Adding New Dotfiles
 

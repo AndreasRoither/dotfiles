@@ -1,0 +1,57 @@
+#!/bin/bash
+# Node.js setup: nvm + LTS Node + pnpm
+# Only runs once per machine via chezmoi run_once_
+
+{{- if ne .chezmoi.os "linux" }}
+exit 0
+{{- end }}
+
+set -euo pipefail
+
+echo "==> Setting up Node.js environment..."
+
+# ── nvm ──────────────────────────────────────────────────────
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+
+if [[ ! -d "$NVM_DIR" ]]; then
+    echo "==> Installing nvm (latest release)..."
+    NVM_LATEST=$(curl -fsSL https://api.github.com/repos/nvm-sh/nvm/releases/latest \
+        | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+
+    if [[ -z "$NVM_LATEST" ]]; then
+        echo "WARNING: Could not determine latest nvm version, falling back to v0.39.0"
+        NVM_LATEST="v0.39.0"
+    fi
+
+    echo "==> Installing nvm $NVM_LATEST..."
+    curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_LATEST}/install.sh" | bash
+    echo "==> nvm $NVM_LATEST installed"
+else
+    echo "==> nvm already installed at $NVM_DIR"
+fi
+
+# Source nvm so we can use it in this script
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Install latest LTS Node if no version is installed yet
+if ! command -v node &>/dev/null; then
+    echo "==> Installing Node.js LTS via nvm..."
+    nvm install --lts
+    nvm use --lts
+    echo "==> Node.js $(node --version) installed"
+else
+    echo "==> Node.js already available: $(node --version)"
+fi
+
+# ── pnpm ─────────────────────────────────────────────────────
+export PNPM_HOME="${PNPM_HOME:-$HOME/.local/share/pnpm}"
+
+if ! command -v pnpm &>/dev/null; then
+    echo "==> Installing pnpm..."
+    curl -fsSL https://get.pnpm.io/install.sh | sh -
+    echo "==> pnpm installed"
+else
+    echo "==> pnpm already installed: $(pnpm --version)"
+fi
+
+echo "==> Node.js environment setup complete!"

@@ -43,7 +43,6 @@ packages:
       - go-task
       - just
       - postgresql
-      - zed
       - docker-buildx
       - intellij-idea-community-edition
       - lazydocker
