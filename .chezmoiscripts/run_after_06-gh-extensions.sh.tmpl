@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if ! command -v gh >/dev/null 2>&1; then
+    echo "gh is not installed, skipping GitHub CLI extensions"
+    exit 0
+fi
+
+if gh extension list | awk '{print $2}' | grep -Fxq 'dlvhdr/gh-dash'; then
+    echo "gh-dash is already installed, skipping"
+    exit 0
+fi
+
+echo "Installing gh-dash GitHub CLI extension"
+gh extension install dlvhdr/gh-dash

@@ -50,7 +50,9 @@ packages:
       - maven
       - python
     aur:
+      - diffnav-bin
       - k6
+      - worktrunk-bin
 
   desktop:
     pacman:
