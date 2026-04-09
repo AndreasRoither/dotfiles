@@ -1,6 +1,17 @@
+{{- $gitUserName := output "git" "config" "--global" "--default" "" "--get" "user.name" | trim -}}
+{{- $gitUserEmail := output "git" "config" "--global" "--default" "" "--get" "user.email" | trim -}}
+{{- $gitSigningKey := output "git" "config" "--global" "--default" "" "--get" "user.signingkey" | trim -}}
+{{- $defaultSigningKey := "" -}}
+{{- if not $gitSigningKey -}}
+{{-   if stat (joinPath .home ".ssh" "id_ed25519.pub") -}}
+{{-     $defaultSigningKey = joinPath .home ".ssh" "id_ed25519.pub" -}}
+{{-   else if stat (joinPath .home ".ssh" "id_rsa.pub") -}}
+{{-     $defaultSigningKey = joinPath .home ".ssh" "id_rsa.pub" -}}
+{{-   end -}}
+{{- end -}}
 [data]
-    name = "{{ promptStringOnce . "name" "Your full name" }}"
-    email = "{{ promptStringOnce . "email" "Your email" }}"
-    signingkey = "{{ promptStringOnce . "signingkey" "SSH signing key path" }}"
+    name = "{{ if $gitUserName }}{{ $gitUserName }}{{ else }}{{ promptStringOnce . "name" "Your full name" }}{{ end }}"
+    email = "{{ if $gitUserEmail }}{{ $gitUserEmail }}{{ else }}{{ promptStringOnce . "email" "Your email" }}{{ end }}"
+    signingkey = "{{ if $gitSigningKey }}{{ $gitSigningKey }}{{ else if $defaultSigningKey }}{{ $defaultSigningKey }}{{ else }}{{ promptStringOnce . "signingkey" "SSH signing key path" }}{{ end }}"
     hostname = "{{ promptStringOnce . "hostname" "Machine hostname" }}"
     editor = "{{ promptStringOnce . "editor" "Editor command (e.g. code --wait)" }}"
