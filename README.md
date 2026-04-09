@@ -24,6 +24,28 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply AndreasRoither/dotfiles
 chezmoi init --apply https://github.com/AndreasRoither/dotfiles.git
 ```
 
+## Local clone usage
+
+If you edit this repository locally, make sure `chezmoi apply` uses the same clone as its source.
+
+One-off apply from the current clone:
+```bash
+cd ~/git/dotfiles
+chezmoi --source="$PWD" apply
+```
+
+Make the clone your default chezmoi source:
+```bash
+cd ~/git/dotfiles
+chezmoi init --source="$PWD"
+chezmoi apply
+```
+
+Check which source directory chezmoi is using:
+```bash
+chezmoi source-path
+```
+
 ## Adding New Dotfiles
 
 ```bash

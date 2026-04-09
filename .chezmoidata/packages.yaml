@@ -50,8 +50,8 @@ packages:
       - maven
       - python
     aur:
-      - diffnav-bin
-      - k6
+      - diffnav
+      - k6-bin
       - worktrunk-bin
 
   desktop:

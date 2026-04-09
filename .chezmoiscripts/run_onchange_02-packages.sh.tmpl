@@ -23,7 +23,7 @@ echo ""
 echo "Select package groups to install:"
 echo ""
 echo "  1) Core    - base-devel, git, zsh, starship, fzf, zoxide, bat, ripgrep, fd, etc."
-echo "  2) Dev     - go, rustup, docker, github-cli, just, go-task, k6, postgresql, etc."
+echo "  2) Dev     - go, rustup, docker, github-cli, just, go-task, k6-bin, postgresql, etc."
 echo "  3) Desktop - firefox, thunderbird, obs-studio, keepassxc, vscode, obsidian, chrome, etc."
 echo "  4) Gaming  - lutris, gamemode, steam, mangohud, bottles, steamtinkerlaunch, etc."
 echo "  5) All     - install everything"
@@ -54,6 +54,11 @@ for choice in "${selected[@]}"; do
         *) echo "Unknown option: $choice" ;;
     esac
 done
+
+echo ""
+echo "==> Refreshing mirrors and updating system first..."
+sudo cachyos-rate-mirrors || true
+sudo pacman -Syu --noconfirm
 
 install_pacman() {
     local packages=("$@")
