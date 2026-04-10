@@ -155,6 +155,7 @@ alias cmirror="sudo cachyos-rate-mirrors"
 alias update='sudo pacman -Syu'
 alias update-yay='yay -Syu --aur'
 alias update-paru='paru -Syu'
+alias protonvpn-reset='protonvpn-kde-reset'
 alias big="expac -H M '%m\t%n' | sort -h | nl"              # Sort installed packages according to size in MB
 alias gitpkg='pacman -Q | grep -i "\-git" | wc -l'          # List amount of -git packages
 

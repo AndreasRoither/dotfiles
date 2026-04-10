@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# I had some problems with KDE and this app specifically, this removes old
+# stuff so I can redo the configuration after kdewallet setup.
+
+set -euo pipefail
+
+if pgrep -f protonvpn-app >/dev/null 2>&1; then
+    pkill -f protonvpn-app
+fi
+
+if [ -d "$HOME/.config/Proton" ]; then
+    backup_dir="$HOME/.config/Proton.bak"
+    if [ -e "$backup_dir" ]; then
+        timestamp="$(date +%Y%m%d-%H%M%S)"
+        backup_dir="${backup_dir}.${timestamp}"
+    fi
+    mv "$HOME/.config/Proton" "$backup_dir"
+    echo "Moved Proton config to $backup_dir"
+else
+    echo "No Proton config found at $HOME/.config/Proton"
+fi
+
+echo "Start ProtonVPN again with: protonvpn-app"

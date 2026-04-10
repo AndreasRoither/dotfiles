@@ -78,6 +78,24 @@ chezmoi cd
 chezmoi apply
 ```
 
+## KDE Plasma Notes
+
+### ProtonVPN GTK app on CachyOS
+
+If the GTK ProtonVPN app fails to start or access credentials under KDE Plasma, make sure KWallet is installed and initialized:
+
+```bash
+sudo pacman -S kwalletmanager kwallet-pam
+kwalletmanager5
+```
+
+Create a default wallet in KWallet, then reset ProtonVPN's local config:
+
+```bash
+protonvpn-kde-reset
+protonvpn-app
+```
+
 ---
 
 <div align="center">
