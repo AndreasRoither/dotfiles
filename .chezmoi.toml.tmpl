@@ -2,6 +2,10 @@
 {{- $gitUserEmail := output "git" "config" "--global" "--default" "" "--get" "user.email" | trim -}}
 {{- $gitSigningKey := output "git" "config" "--global" "--default" "" "--get" "user.signingkey" | trim -}}
 {{- $defaultSigningKey := "" -}}
+{{- $linuxID := "" -}}
+{{- $linuxVersion := "" -}}
+{{- $linuxLike := "" -}}
+{{- $windowsVersion := "" -}}
 {{- if not $gitSigningKey -}}
 {{-   if stat (joinPath .home ".ssh" "id_ed25519.pub") -}}
 {{-     $defaultSigningKey = joinPath .home ".ssh" "id_ed25519.pub" -}}
@@ -9,9 +13,32 @@
 {{-     $defaultSigningKey = joinPath .home ".ssh" "id_rsa.pub" -}}
 {{-   end -}}
 {{- end -}}
+{{- if eq .chezmoi.os "linux" -}}
+{{-   $linuxID = output "sh" "-c" ". /etc/os-release && printf '%s' \"$ID\"" | trim -}}
+{{-   $linuxVersion = output "sh" "-c" ". /etc/os-release && printf '%s' \"$VERSION_ID\"" | trim -}}
+{{-   $linuxLike = output "sh" "-c" ". /etc/os-release && printf '%s' \"$ID_LIKE\"" | trim -}}
+{{- else if eq .chezmoi.os "windows" -}}
+{{-   $windowsVersion = output "powershell" "-NoProfile" "-Command" "(Get-CimInstance Win32_OperatingSystem).Version" | trim -}}
+{{- end -}}
 [data]
     name = "{{ if $gitUserName }}{{ $gitUserName }}{{ else }}{{ promptStringOnce . "name" "Your full name" }}{{ end }}"
     email = "{{ if $gitUserEmail }}{{ $gitUserEmail }}{{ else }}{{ promptStringOnce . "email" "Your email" }}{{ end }}"
     signingkey = "{{ if $gitSigningKey }}{{ $gitSigningKey }}{{ else if $defaultSigningKey }}{{ $defaultSigningKey }}{{ else }}{{ promptStringOnce . "signingkey" "SSH signing key path" }}{{ end }}"
     hostname = "{{ promptStringOnce . "hostname" "Machine hostname" }}"
     editor = "{{ promptStringOnce . "editor" "Editor command (e.g. code --wait)" }}"
+
+    [data.platform]
+        os = {{ .chezmoi.os | quote }}
+        arch = {{ .chezmoi.arch | quote }}
+        is_linux = {{ eq .chezmoi.os "linux" }}
+        is_windows = {{ eq .chezmoi.os "windows" }}
+
+    [data.platform.linux]
+        id = {{ $linuxID | quote }}
+        version = {{ $linuxVersion | quote }}
+        like = {{ $linuxLike | quote }}
+        is_arch = {{ or (eq $linuxID "arch") (eq $linuxID "cachyos") (contains "arch" $linuxLike) }}
+        is_cachyos = {{ eq $linuxID "cachyos" }}
+
+    [data.platform.windows]
+        version = {{ $windowsVersion | quote }}

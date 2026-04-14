@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "linux" }}
 #!/bin/bash
 # Shell setup: Oh My Zsh + plugins + set default shell
 # Only runs once per machine via chezmoi run_once_
@@ -46,3 +47,4 @@ else
 fi
 
 echo "==> Shell setup complete!"
+{{- end }}

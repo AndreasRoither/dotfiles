@@ -7,3 +7,7 @@ public/
 {{- if eq .hostname "server" }}
 dot_config/alacritty/
 {{- end }}
+
+{{- if ne .chezmoi.os "windows" }}
+dot_documents/PowerShell/
+{{- end }}

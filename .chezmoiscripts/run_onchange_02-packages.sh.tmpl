@@ -1,12 +1,9 @@
+{{- if eq .chezmoi.os "linux" }}
 #!/bin/bash
-# Interactive package installer for Arch Linux
+# Interactive package installer for CachyOS / Arch Linux
 # Re-runs when packages.yaml changes (chezmoi tracks the hash below)
 #
 # packages.yaml hash: {{ include ".chezmoidata/packages.yaml" | sha256sum }}
-
-{{- if ne .chezmoi.os "linux" }}
-exit 0
-{{- end }}
 
 set -euo pipefail
 
@@ -83,38 +80,39 @@ install_aur() {
 if $install_core; then
     echo ""
     echo "--- Core packages ---"
-    install_pacman {{ .packages.core.pacman | join " " }}
-{{- if .packages.core.aur }}
-    install_aur {{ .packages.core.aur | join " " }}
+    install_pacman {{ .packages.linux.cachyos.core.pacman | join " " }}
+{{- if .packages.linux.cachyos.core.aur }}
+    install_aur {{ .packages.linux.cachyos.core.aur | join " " }}
 {{- end }}
 fi
 
 if $install_dev; then
     echo ""
     echo "--- Dev packages ---"
-    install_pacman {{ .packages.dev.pacman | join " " }}
-{{- if .packages.dev.aur }}
-    install_aur {{ .packages.dev.aur | join " " }}
+    install_pacman {{ .packages.linux.cachyos.dev.pacman | join " " }}
+{{- if .packages.linux.cachyos.dev.aur }}
+    install_aur {{ .packages.linux.cachyos.dev.aur | join " " }}
 {{- end }}
 fi
 
 if $install_desktop; then
     echo ""
     echo "--- Desktop packages ---"
-    install_pacman {{ .packages.desktop.pacman | join " " }}
-{{- if .packages.desktop.aur }}
-    install_aur {{ .packages.desktop.aur | join " " }}
+    install_pacman {{ .packages.linux.cachyos.desktop.pacman | join " " }}
+{{- if .packages.linux.cachyos.desktop.aur }}
+    install_aur {{ .packages.linux.cachyos.desktop.aur | join " " }}
 {{- end }}
 fi
 
 if $install_gaming; then
     echo ""
     echo "--- Gaming packages ---"
-    install_pacman {{ .packages.gaming.pacman | join " " }}
-{{- if .packages.gaming.aur }}
-    install_aur {{ .packages.gaming.aur | join " " }}
+    install_pacman {{ .packages.linux.cachyos.gaming.pacman | join " " }}
+{{- if .packages.linux.cachyos.gaming.aur }}
+    install_aur {{ .packages.linux.cachyos.gaming.aur | join " " }}
 {{- end }}
 fi
 
 echo ""
 echo "==> Package installation complete!"
+{{- end }}

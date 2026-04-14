@@ -1,0 +1,24 @@
+{{- if eq .chezmoi.os "windows" }}
+$ErrorActionPreference = "Stop"
+
+if (-not $IsWindows) {
+    exit 0
+}
+
+Write-Host "==> Setting up Node.js environment..."
+
+if (-not (Get-Command fnm -ErrorAction SilentlyContinue)) {
+    Write-Warning "fnm not found. Install the Dev package group first."
+    exit 0
+}
+
+fnm install --lts
+fnm default lts-latest
+
+if (Get-Command corepack -ErrorAction SilentlyContinue) {
+    corepack enable
+    corepack prepare pnpm@latest --activate
+}
+
+Write-Host "==> Node.js environment setup complete!"
+{{- end }}

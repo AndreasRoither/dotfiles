@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "linux" }}
 #!/bin/bash
 # Node.js setup: nvm + LTS Node + pnpm
 # Only runs once per machine via chezmoi run_once_
@@ -55,3 +56,4 @@ else
 fi
 
 echo "==> Node.js environment setup complete!"
+{{- end }}

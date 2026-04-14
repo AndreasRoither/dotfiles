@@ -1,102 +1,152 @@
 packages:
-  core:
-    pacman:
-      - base-devel
-      - git
-      - zsh
-      - starship
-      - fzf
-      - zoxide
-      - bat
-      - ripgrep
-      - fd
-      - thefuck
-      - micro
-      - alacritty
-      - curl
-      - wget
-      - unzip
-      - p7zip
-      - aria2
-      - btop
-      - chezmoi
-      - duf
-      - fastfetch
-      - glances
-      - less
-      - nano
-      - nano-syntax-highlighting
-      - pv
-      - shellcheck
-      - xclip
-    aur:
-      - paru
-      - yay
+  linux:
+    cachyos:
+      core:
+        pacman:
+          - base-devel
+          - git
+          - zsh
+          - starship
+          - fzf
+          - zoxide
+          - bat
+          - ripgrep
+          - fd
+          - thefuck
+          - micro
+          - alacritty
+          - curl
+          - wget
+          - unzip
+          - p7zip
+          - aria2
+          - btop
+          - chezmoi
+          - duf
+          - fastfetch
+          - glances
+          - less
+          - nano
+          - nano-syntax-highlighting
+          - pv
+          - shellcheck
+          - xclip
+        aur:
+          - paru
+          - yay
 
-  dev:
-    pacman:
-      - go
-      - rustup
-      - docker
-      - docker-compose
-      - github-cli
-      - go-task
-      - just
-      - postgresql
-      - docker-buildx
-      - intellij-idea-community-edition
-      - lazydocker
-      - lazygit
-      - maven
-      - python
-    aur:
-      - diffnav
-      - k6-bin
-      - worktrunk-bin
+      dev:
+        pacman:
+          - go
+          - rustup
+          - docker
+          - docker-compose
+          - github-cli
+          - go-task
+          - just
+          - postgresql
+          - docker-buildx
+          - intellij-idea-community-edition
+          - lazydocker
+          - lazygit
+          - maven
+          - python
+        aur:
+          - diffnav
+          - k6-bin
+          - worktrunk-bin
 
-  desktop:
-    pacman:
-      - firefox
-      - qbittorrent
-      - obs-studio
-      - mpv
-      - anki
-      - discord
-      - krita
-      - spectacle
-      - spotify-launcher
-      - syncthing
-    aur:
-      - ente-auth-bin
-      - google-chrome
-      - jamesdsp
-      - microsoft-edge-stable-bin
-      - obsidian
-      - syncthingtray-qt6
-      - visual-studio-code-bin
-      - proton-mail-bin
-      - proton-vpn-gtk-app
-      - zen-browser-bin
+      desktop:
+        pacman:
+          - firefox
+          - qbittorrent
+          - obs-studio
+          - mpv
+          - anki
+          - discord
+          - krita
+          - spectacle
+          - spotify-launcher
+          - syncthing
+        aur:
+          - ente-auth-bin
+          - google-chrome
+          - jamesdsp
+          - microsoft-edge-stable-bin
+          - obsidian
+          - syncthingtray-qt6
+          - visual-studio-code-bin
+          - proton-mail-bin
+          - proton-vpn-gtk-app
+          - zen-browser-bin
 
-  gaming:
-    pacman:
-      - lutris
-      - gamemode
-      - lib32-gamemode
-      - steam
-      - mangohud
-    aur:
-      - bottles
-      - exiled-exchange-2-bin
-      - steamtinkerlaunch
-      - vintagestory
+      gaming:
+        pacman:
+          - lutris
+          - gamemode
+          - lib32-gamemode
+          - steam
+          - mangohud
+        aur:
+          - bottles
+          - exiled-exchange-2-bin
+          - steamtinkerlaunch
+          - vintagestory
 
-  system:
-    pacman:
-      - btrfs-assistant
-      - btrfs-progs
-      - gparted
-      - snapper
-      - ark
-      - filelight
-      - ufw
+      system:
+        pacman:
+          - btrfs-assistant
+          - btrfs-progs
+          - gparted
+          - snapper
+          - ark
+          - filelight
+          - ufw
+
+  windows:
+    core:
+      winget:
+        - Git.Git
+        - Microsoft.PowerShell
+        - Microsoft.WindowsTerminal
+        - Starship.Starship
+        - Junegunn.Fzf
+        - ajeetdsouza.zoxide
+        - BurntSushi.ripgrep.MSVC
+        - sharkdp.fd
+        - sharkdp.bat
+        - Alacritty.Alacritty
+        - twpayne.chezmoi
+        - 7zip.7zip
+        - Fastfetch-cli.Fastfetch
+
+    dev:
+      winget:
+        - GitHub.cli
+        - Docker.DockerDesktop
+        - GoLang.Go
+        - Rustlang.Rustup
+        - Schniz.fnm
+        - pnpm.pnpm
+        - JesseDuffield.lazygit
+        - Casey.Just
+        - Microsoft.VisualStudioCode
+        - JetBrains.IntelliJIDEA.Community
+        - Python.Python.3.12
+
+    desktop:
+      winget:
+        - Mozilla.Firefox
+        - Obsidian.Obsidian
+        - Discord.Discord
+        - OBSProject.OBSStudio
+        - KDE.Krita
+        - VideoLAN.VLC
+        - qBittorrent.qBittorrent
+        - Microsoft.PowerToys
+
+    gaming:
+      winget:
+        - Valve.Steam
+        - Discord.Discord
+        - HeroicGamesLauncher.HeroicGamesLauncher

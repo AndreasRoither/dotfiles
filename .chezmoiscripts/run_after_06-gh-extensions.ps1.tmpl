@@ -1,0 +1,21 @@
+{{- if eq .chezmoi.os "windows" }}
+$ErrorActionPreference = "Stop"
+
+if (-not $IsWindows) {
+    exit 0
+}
+
+if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
+    Write-Host "gh is not installed, skipping GitHub CLI extensions"
+    exit 0
+}
+
+$extensions = gh extension list
+if ($extensions -match "dlvhdr/gh-dash") {
+    Write-Host "gh-dash is already installed, skipping"
+    exit 0
+}
+
+Write-Host "Installing gh-dash GitHub CLI extension"
+gh extension install dlvhdr/gh-dash
+{{- end }}

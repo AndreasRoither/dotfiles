@@ -1,0 +1,23 @@
+{{- if eq .chezmoi.os "windows" }}
+$ErrorActionPreference = "Stop"
+
+if (-not $IsWindows) {
+    exit 0
+}
+
+Write-Host "==> Setting up Windows shell environment..."
+
+if (Get-Command starship -ErrorAction SilentlyContinue) {
+    Write-Host "==> starship already installed"
+} else {
+    Write-Warning "starship not found. Install the Core package group first."
+}
+
+if (Get-Command git -ErrorAction SilentlyContinue) {
+    Write-Host "==> Git already installed"
+} else {
+    Write-Warning "Git not found. Install the Core package group first."
+}
+
+Write-Host "==> Shell setup complete!"
+{{- end }}

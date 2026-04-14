@@ -1,4 +1,9 @@
+{{- if eq .chezmoi.os "linux" }}
 #!/bin/bash
+
+{{- if ne .chezmoi.os "linux" }}
+exit 0
+{{- end }}
 
 set -euo pipefail
 
@@ -14,3 +19,4 @@ fi
 
 echo "Installing gh-dash GitHub CLI extension"
 gh extension install dlvhdr/gh-dash
+{{- end }}

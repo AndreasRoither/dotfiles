@@ -14,6 +14,12 @@ if [ -f "{{ .chezmoi.homeDir }}/.cargo/env" ]; then
   . "{{ .chezmoi.homeDir }}/.cargo/env"
 fi
 
+{{- if eq .chezmoi.os "windows" }}
+if command -v fnm >/dev/null 2>&1; then
+  eval "$(fnm env --use-on-cd --shell bash)"
+fi
+{{- end }}
+
 # Don't put duplicate lines in the history and do not add lines that start with a space
 export HISTCONTROL=erasedups:ignoredups:ignorespace
 
@@ -24,4 +30,3 @@ export GPG_TTY=$(tty)
 
 eval "$(zoxide init bash)"
 
-if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi

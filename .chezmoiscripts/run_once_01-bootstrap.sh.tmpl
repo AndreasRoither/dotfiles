@@ -1,21 +1,16 @@
+{{- if eq .chezmoi.os "linux" }}
 #!/bin/bash
-# Bootstrap script: installs paru AUR helper on Arch Linux
+# Bootstrap script: installs paru AUR helper on CachyOS / Arch Linux
 # Only runs once per machine via chezmoi run_once_
-
-{{- if ne .chezmoi.os "linux" }}
-# Not Linux, skipping bootstrap
-exit 0
-{{- end }}
 
 set -euo pipefail
 
-# Check if this is an Arch-based system
 if ! command -v pacman &>/dev/null; then
     echo "Not an Arch-based system, skipping bootstrap"
     exit 0
 fi
 
-echo "==> Bootstrapping Arch Linux system..."
+echo "==> Bootstrapping {{ .platform.linux.id | default "linux" }} system..."
 
 # Ensure base-devel and git are installed
 if ! pacman -Qi base-devel &>/dev/null; then
@@ -41,3 +36,4 @@ else
 fi
 
 echo "==> Bootstrap complete!"
+{{- end }}

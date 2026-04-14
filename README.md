@@ -8,17 +8,24 @@
 
 My personal dotfiles, managed with [chezmoi](https://www.chezmoi.io/).
 
-Targets Arch Linux (CachyOS) with KDE Plasma, zsh + Oh My Zsh + Starship, and a full dev toolchain (Go, Rust, Node, Python, Docker etc).
+For Windows and Linux CachyOS.
 
 ## Quick Start
 
-**One-liner for a fresh machine:**
+**Linux / CachyOS**
 
 ```bash
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply AndreasRoither/dotfiles
 ```
 
-**If chezmoi is already installed:**
+**Windows PowerShell**
+
+```powershell
+winget install twpayne.chezmoi
+chezmoi init --apply https://github.com/AndreasRoither/dotfiles.git
+```
+
+**If chezmoi is already installed**
 
 ```bash
 chezmoi init --apply https://github.com/AndreasRoither/dotfiles.git

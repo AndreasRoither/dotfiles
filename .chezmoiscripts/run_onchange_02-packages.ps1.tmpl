@@ -1,0 +1,111 @@
+{{- if eq .chezmoi.os "windows" }}
+$ErrorActionPreference = "Stop"
+
+# Interactive package installer for Windows
+# Re-runs when packages.yaml changes (chezmoi tracks the hash below)
+#
+# packages.yaml hash: {{ include ".chezmoidata/packages.yaml" | sha256sum }}
+
+if (-not $IsWindows) {
+    exit 0
+}
+
+if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+    Write-Warning "winget is not available. Install App Installer from Microsoft Store first."
+    exit 0
+}
+
+Write-Host ""
+Write-Host "=============================="
+Write-Host "  Package Group Installer"
+Write-Host "=============================="
+Write-Host ""
+Write-Host "Select package groups to install:"
+Write-Host ""
+Write-Host "  1) Core    - Git, PowerShell, Windows Terminal, starship, ripgrep, fd, bat, chezmoi, etc."
+Write-Host "  2) Dev     - GitHub CLI, Docker Desktop, Go, rustup, fnm, pnpm, VS Code, IntelliJ, Python, etc."
+Write-Host "  3) Desktop - Firefox, Obsidian, Discord, OBS Studio, Krita, VLC, qBittorrent, PowerToys"
+Write-Host "  4) Gaming  - Steam, Heroic"
+Write-Host "  5) All     - install everything"
+Write-Host "  0) Skip    - don't install any packages"
+Write-Host ""
+
+$choices = Read-Host "Enter choices (comma-separated, e.g. 1,2)"
+if ([string]::IsNullOrWhiteSpace($choices) -or $choices -eq "0") {
+    Write-Host "Skipping package installation."
+    exit 0
+}
+
+$installCore = $false
+$installDev = $false
+$installDesktop = $false
+$installGaming = $false
+
+foreach ($choice in ($choices -split ",")) {
+    switch ($choice.Trim()) {
+        "1" { $installCore = $true }
+        "2" { $installDev = $true }
+        "3" { $installDesktop = $true }
+        "4" { $installGaming = $true }
+        "5" {
+            $installCore = $true
+            $installDev = $true
+            $installDesktop = $true
+            $installGaming = $true
+        }
+        default { Write-Warning "Unknown option: $choice" }
+    }
+}
+
+function Install-WingetPackages {
+    param([string[]]$Packages)
+
+    foreach ($package in $Packages) {
+        Write-Host "==> Installing $package"
+        winget install --exact --id $package --accept-package-agreements --accept-source-agreements --silent
+    }
+}
+
+if ($installCore) {
+    Write-Host ""
+    Write-Host "--- Core packages ---"
+    Install-WingetPackages @(
+{{- range .packages.windows.core.winget }}
+        "{{ . }}"
+{{- end }}
+    )
+}
+
+if ($installDev) {
+    Write-Host ""
+    Write-Host "--- Dev packages ---"
+    Install-WingetPackages @(
+{{- range .packages.windows.dev.winget }}
+        "{{ . }}"
+{{- end }}
+    )
+}
+
+if ($installDesktop) {
+    Write-Host ""
+    Write-Host "--- Desktop packages ---"
+    Install-WingetPackages @(
+{{- range .packages.windows.desktop.winget }}
+        "{{ . }}"
+{{- end }}
+    )
+}
+
+if ($installGaming) {
+    Write-Host ""
+    Write-Host "--- Gaming packages ---"
+    Install-WingetPackages @(
+{{- range .packages.windows.gaming.winget }}
+        "{{ . }}"
+{{- end }}
+    )
+}
+
+Write-Host ""
+Write-Host "==> Package installation complete!"
+{{- end }}

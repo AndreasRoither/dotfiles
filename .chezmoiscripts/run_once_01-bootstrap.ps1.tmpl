@@ -1,0 +1,17 @@
+{{- if eq .chezmoi.os "windows" }}
+$ErrorActionPreference = "Stop"
+
+if (-not $IsWindows) {
+    Write-Host "Not Windows, skipping bootstrap"
+    exit 0
+}
+
+Write-Host "==> Bootstrapping Windows {{ .platform.windows.version }}..."
+
+if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+    Write-Warning "winget is not available. Install App Installer from Microsoft Store first."
+    exit 0
+}
+
+Write-Host "==> winget available"
+{{- end }}
